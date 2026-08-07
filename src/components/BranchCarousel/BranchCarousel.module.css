@@ -1,0 +1,100 @@
+/* Styles spécifiques au carrousel 3D en Arc */
+.carouselContainer {
+  perspective: 1400px;
+  position: relative;
+  width: 100%;
+  padding: 1.5rem 0 3rem 0;
+  user-select: none;
+}
+
+/* Lumière d'ambiance en arc au sol */
+.arcFloorLight {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.25) 0%, rgba(245, 158, 11, 0.2) 40%, transparent 75%);
+  filter: blur(30px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ligne courbe en filigrane sous l'arc */
+.arcRingLine {
+  position: absolute;
+  bottom: 45px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  height: 50px;
+  border-top: 2px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 50% / 100% 100% 0 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Style personnalisé pour les slides Swiper */
+.customSlide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 240px;
+  transform-style: preserve-3d;
+  transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+  padding: 12px 0;
+}
+
+@media (min-width: 640px) {
+  .customSlide {
+    width: 270px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .customSlide {
+    width: 300px;
+  }
+}
+
+
+@keyframes pulseGlowFatt {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(245, 158, 11, 0.4), 0 0 50px rgba(245, 158, 11, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(245, 158, 11, 0.7), 0 0 85px rgba(245, 158, 11, 0.35);
+  }
+}
+
+@keyframes pulseGlowFathet {
+  0%, 100% {
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.4), 0 0 50px rgba(99, 102, 241, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(99, 102, 241, 0.7), 0 0 85px rgba(99, 102, 241, 0.35);
+  }
+}
+
+/* Personnalisation de la pagination Swiper */
+:global(.swiper-pagination) {
+  bottom: 0px !important;
+}
+
+:global(.swiper-pagination-bullet) {
+  background: rgba(255, 255, 255, 0.3) !important;
+  opacity: 1 !important;
+  width: 9px !important;
+  height: 9px !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  margin: 0 5px !important;
+}
+
+:global(.swiper-pagination-bullet-active) {
+  background: linear-gradient(135deg, #f59e0b, #6366f1) !important;
+  width: 28px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 0 12px rgba(99, 102, 241, 0.6) !important;
+}
