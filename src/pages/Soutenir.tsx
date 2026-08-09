@@ -19,11 +19,12 @@ export default function Soutenir() {
 
   return (
     <>
-      <PageHeader
-        eyebrow="Soutenir la mission"
-        title="Investissez dans la transformation d'une vie."
-        intro="Choisissez le pilier d'impact qui vous tient. Chaque contribution soutient un acte concret de la mission."
-      />
+     <PageHeader
+  eyebrow="Soutenir la mission"
+  title="Investissez dans la transformation d'une vie."
+  intro="Choisissez le pilier d'impact qui vous tient. Chaque contribution soutient un acte concret de la mission."
+  image="/images/soutenir-hero.jpg"
+/>
 
       <section className="bg-background py-20 sm:py-28 grain">
         <div className="max-w-[1400px] mx-auto px-5 sm:px-8">
@@ -67,7 +68,7 @@ export default function Soutenir() {
                         amount === a ? "bg-accent text-accent-foreground" : "bg-white/10 hover:bg-white/15"
                       }`}
                     >
-                      {a} €
+                      {a} XOF
                     </button>
                   ))}
                 </div>
@@ -79,7 +80,7 @@ export default function Soutenir() {
 
                 <div className="border-t border-white/10 pt-6 mt-6 flex items-baseline justify-between">
                   <span className="text-sm text-primary-foreground/60">Total</span>
-                  <span className="font-heading text-3xl">{amount} €</span>
+                  <span className="font-heading text-3xl">{amount} XOF</span>
                 </div>
 
                 <button className="w-full mt-6 bg-accent text-accent-foreground py-4 font-medium hover:bg-accent/90 transition-colors">

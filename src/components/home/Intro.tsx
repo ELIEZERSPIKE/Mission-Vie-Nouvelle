@@ -30,7 +30,7 @@ export default function Intro() {
               className="space-y-7 text-lg leading-relaxed text-foreground/80"
             >
               <p className="font-heading text-2xl sm:text-3xl leading-snug text-foreground text-balance">
-                Vie Nouvelle Togo est une mission chrétienne qui agit sur tout l'être humain:le corps , l'âme et l'esprit.
+                Vie Nouvelle Togo est une mission chrétienne qui agit sur tout l'être humain: le corps , l'âme et l'esprit.
               </p>
               <p>
                 Sur tout le territoire togolais, nous répondons à l'appel du Christ en bâtissant un écosystème où la foi, l'éducation, la formation professionnelle et les soins convergent vers une même fin : restaurer l'homme dans sa dignité entière.

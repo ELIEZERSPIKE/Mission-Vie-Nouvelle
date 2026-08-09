@@ -1,21 +1,19 @@
-// BranchSelector.tsx - Version avec numéros corrigés
-import React, { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion";
+// BranchSelector.tsx - Version avec numéros corrigés + programmes cliquables
+// FattAdmission et FathetPrograms ont été extraits dans leurs propres composants
+import React from "react"
+import { motion } from "framer-motion";
 import {
   ChevronDown,
   Target,
-  FileText,
-  Award,
   GraduationCap,
-  CheckCircle2,
   MapPin,
   Phone,
   Mail,
-  ChevronRight,
   ExternalLink,
-  Clock,
 } from "lucide-react";
 import BranchCarousel from "@/components/BranchCarousel";
+import FattAdmission from "@/components/formation/FattAdmission";
+import FathetPrograms from "@/components/formation/FathetPrograms";
 import { trainingLocations, TrainingLocation } from "@/data/trainingLocations";
 import { branchImages } from "@/data/branchImages";
 
@@ -25,68 +23,6 @@ interface BranchSelectorProps {
   activeBranch: BranchType;
   onSelectBranch: (branch: BranchType) => void;
 }
-
-// Composant pour les badges de filtre
-const FilterBadge = ({ 
-  label, 
-  active, 
-  onClick, 
-  color = "primary" 
-}: { 
-  label: string; 
-  active: boolean; 
-  onClick: () => void; 
-  color?: "primary" | "accent";
-}) => {
-  const colorClasses = {
-    primary: active ? "bg-primary text-white shadow-lg shadow-primary/30" : "bg-background/40 hover:bg-primary/10 border-border/30",
-    accent: active ? "bg-accent text-white shadow-lg shadow-accent/30" : "bg-background/40 hover:bg-accent/10 border-border/30",
-  };
-
-  return (
-    <button
-      onClick={onClick}
-      className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 border ${
-        colorClasses[color]
-      }`}
-    >
-      {label}
-    </button>
-  );
-};
-
-// Composant pour les programmes (réutilisable)
-const ProgramCard = ({ 
-  program, 
-  color = "primary" 
-}: { 
-  program: any; 
-  color?: "primary" | "accent";
-}) => {
-  const borderColor = color === "primary" ? "hover:border-primary/30" : "hover:border-accent/30";
-  const badgeColor = color === "primary" ? "bg-primary/20 text-primary" : "bg-accent/20 text-accent";
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      className={`p-4 rounded-xl bg-background/60 border border-border/30 ${borderColor} transition-all duration-300 hover:shadow-md`}
-    >
-      <div className="flex items-start justify-between gap-2">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-bold text-sm text-foreground">{program.title}</span>
-            <span className="text-xs text-foreground/60">— {program.subtitle}</span>
-          </div>
-          <p className="text-xs text-foreground/60 mt-1 line-clamp-2">{program.desc}</p>
-        </div>
-        <span className={`text-[10px] ${badgeColor} font-bold px-2.5 py-1 rounded-full whitespace-nowrap flex-shrink-0`}>
-          {program.duration}
-        </span>
-      </div>
-    </motion.div>
-  );
-};
 
 // Composant Localisation avec numéros corrigés
 const LocationInfo = ({ 
@@ -234,10 +170,6 @@ const LocationInfo = ({
             <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
             Disponible
           </span>
-          <span className="text-[10px] text-foreground/30 flex items-center gap-1">
-            <Clock className="w-3 h-3" />
-            Lun-Ven
-          </span>
         </div>
       </div>
     </motion.div>
@@ -245,50 +177,6 @@ const LocationInfo = ({
 };
 
 export default function BranchSelector({ activeBranch, onSelectBranch }: BranchSelectorProps) {
-  const [filterLevel, setFilterLevel] = useState<'all' | 'licence' | 'master' | 'certification'>('all');
-
-  const programs = [
-    {
-      title: "PDLM",
-      subtitle: "Préparation aux Diplômes de Licence & Master",
-      duration: "03 ans",
-      desc: "Formation pour tous les pasteurs et ceux qui n'ont pas le BAC. Permet de faire son BAC et continuer en Licence de Théologie.",
-      level: 'licence',
-    },
-    {
-      title: "Licence 1 - 2 - 3",
-      subtitle: "Licence en Théologie",
-      duration: "03 ans",
-      desc: "Formation en 1ère, 2ème et 3ème année de licence avec soutenance de mémoire en fin de cycle.",
-      level: 'licence',
-    },
-    {
-      title: "Master 1 - 2",
-      subtitle: "Master en Théologie",
-      duration: "02 ans",
-      desc: "Pour la poursuite en profondeur conduisant aux recherches et à la spécialisation avec soutenance de thèses.",
-      level: 'master',
-    },
-    {
-      title: "Bachelor 1 - 2 - 3",
-      subtitle: "Bachelor en Théologie",
-      duration: "06 mois/niveau",
-      desc: "Cours spécifiques pour le Bac CITAF (Bac Théologique) équivalent au Bac académique.",
-      level: 'licence',
-    },
-    {
-      title: "Certification",
-      subtitle: "Épouses de Serviteurs",
-      duration: "01 an",
-      desc: "Séminaires périodiques pour la formation des femmes de Pasteurs avec attestations de participation.",
-      level: 'certification',
-    },
-  ] as const;
-
-  const filteredPrograms = programs.filter(prog =>
-    filterLevel === 'all' || prog.level === filterLevel
-  );
-
   const fattLocation = trainingLocations.find(l => l.id === 'fatt');
   const fathetLocation = trainingLocations.find(l => l.id === 'fathet');
 
@@ -314,7 +202,7 @@ export default function BranchSelector({ activeBranch, onSelectBranch }: BranchS
         <div className="space-y-20 mb-14">
 
           {/* ---------- CURSUS 1 : FATT ---------- */}
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          <div id="fatt" className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
             
             {/* Texte - Gauche */}
             <motion.div
@@ -341,62 +229,7 @@ export default function BranchSelector({ activeBranch, onSelectBranch }: BranchS
                 Former des serviteurs de Dieu à être des héros de grand calibre, capables d'arracher des âmes qui jusqu'ici sont tenues captives dans les ténèbres.
               </p>
 
-              {/* Objectifs */}
-              <div className="mb-6 max-w-xl">
-                <h4 className="flex items-center gap-2 font-bold text-foreground text-xs uppercase tracking-wider mb-3">
-                  <CheckCircle2 className="w-4 h-4 text-accent" />
-                  Objectifs stratégiques
-                </h4>
-                <ul className="space-y-2.5 text-sm">
-                  {[
-                    "Former des serviteurs de Dieu à être des héros de grands calibres, capables d'arracher des âmes captives dans les ténèbres",
-                    "Rétablir les enseignements fondamentaux de Jésus-Christ",
-                    "Amener les leaders en toute humilité à œuvrer pour la croissance des Églises locales",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-foreground/80">
-                      <CheckCircle2 className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Dossier d'admission */}
-              <div className="mb-6 max-w-xl p-5 rounded-2xl bg-background/60 border border-border/40">
-                <h4 className="flex items-center gap-2 font-bold text-foreground text-xs uppercase tracking-wider mb-3">
-                  <FileText className="w-4 h-4 text-accent" />
-                  Dossier d'admission
-                </h4>
-                <p className="text-sm text-foreground/70 mb-3">
-                  Le candidat désireux de s'inscrire doit présenter sous chemise les documents suivants :
-                </p>
-                <ul className="grid grid-cols-2 gap-1.5 text-sm">
-                  {[
-                    "02 photos passeport",
-                    "Copie du certificat de naissance",
-                    "Carte d'identité en cours",
-                    "Demande d'inscription",
-                    "Lettre de recommandation",
-                    "Certificat médical",
-                    "Curriculum Vitae",
-                    "Autorisation du conjoint(e)",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-foreground/70">
-                      <div className="w-1 h-1 rounded-full bg-accent/40" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-4 pt-4 border-t border-border/40">
-                  <a
-                    href="#inscription"
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:gap-3 transition-all duration-300"
-                  >
-                    Remplir le formulaire d'inscription en ligne
-                    <ChevronDown className="w-4 h-4 -rotate-90" />
-                  </a>
-                </div>
-              </div>
+              <FattAdmission />
 
               <div className="pt-2 border-t border-border/20 max-w-xl">
                 <a
@@ -450,7 +283,7 @@ export default function BranchSelector({ activeBranch, onSelectBranch }: BranchS
           </div>
 
           {/* ---------- CURSUS 2 : FATHET ---------- */}
-          <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          <div id="fathet" className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
 
             {/* Image + Localisation - Gauche */}
             <motion.div
@@ -515,83 +348,8 @@ export default function BranchSelector({ activeBranch, onSelectBranch }: BranchS
                 Cursus académiques et théologiques complets allant du niveau préparatoire jusqu'au Master, ainsi que des programmes spécifiques pour le ministère.
               </p>
 
-              {/* Parcours & Diplômes */}
-              <div className="mb-6 max-w-xl">
-                <h4 className="flex items-center gap-2 font-bold text-foreground text-xs uppercase tracking-wider mb-3">
-                  <Award className="w-4 h-4 text-primary" />
-                  Niveaux &amp; Diplômes proposés
-                </h4>
+              <FathetPrograms />
 
-                {/* Filtres */}
-                <div className="flex gap-2 mb-3 flex-wrap">
-                  {(['all', 'licence', 'master', 'certification'] as const).map(filter => (
-                    <FilterBadge
-                      key={filter}
-                      label={filter === 'all' ? 'Tous' : filter.charAt(0).toUpperCase() + filter.slice(1)}
-                      active={filterLevel === filter}
-                      onClick={() => setFilterLevel(filter)}
-                      color="primary"
-                    />
-                  ))}
-                </div>
-
-                <AnimatePresence mode="wait">
-                  <div className="space-y-2.5">
-                    {filteredPrograms.map((prog, i) => (
-                      <ProgramCard key={i} program={prog} color="primary" />
-                    ))}
-                  </div>
-                </AnimatePresence>
-              </div>
-
-              {/* Demande d'admission */}
-              <div className="mb-6 max-w-xl p-5 rounded-2xl bg-background/60 border border-border/40">
-                <h4 className="flex items-center gap-2 font-bold text-foreground text-xs uppercase tracking-wider mb-3">
-                  <FileText className="w-4 h-4 text-primary" />
-                  Procédure de Demande d'Admission
-                </h4>
-                <p className="text-sm text-foreground/70 mb-3 leading-relaxed">
-                  Pour toute demande d'admission, téléchargez le dossier d'inscription, remplissez-le convenablement, et ajoutez votre dossier complet :
-                </p>
-                <ul className="grid grid-cols-2 gap-1.5 text-sm mb-3">
-                  {[
-                    "Curriculum Vitae (CV)",
-                    "Copies des Diplômes",
-                    "Lettre de recommandation",
-                    "Pièces complémentaires",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-foreground/70">
-                      <div className="w-1 h-1 rounded-full bg-primary/40" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="p-3 rounded-lg bg-secondary/40 border border-border/30">
-                  <p className="text-xs text-foreground/60">
-                    <span className="font-semibold">📌 Important :</span> Le tout doit être réuni en un <strong>seul document</strong> à transmettre à la faculté ou à soumettre en ligne.
-                  </p>
-                </div>
-                <div className="mt-3 pt-3 border-t border-border/40">
-                  <a
-                    href="#inscription"
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:gap-3 transition-all duration-300"
-                  >
-                    Soumettre votre dossier d'admission en ligne
-                    <ChevronDown className="w-4 h-4 -rotate-90" />
-                  </a>
-                </div>
-              </div>
-
-              <div className="pt-2 border-t border-border/20 max-w-xl">
-                <a
-                  href="#programmes"
-                  onClick={() => onSelectBranch("fathet")}
-                  className="inline-flex items-center gap-2 font-medium text-primary hover:gap-3 transition-all duration-300 text-sm group"
-                >
-                  Explorer les programmes FATHET
-                  <ChevronDown className="w-4 h-4 transition-transform group-hover:translate-x-1 -rotate-90" />
-                </a>
-              </div>
             </motion.div>
           </div>
 

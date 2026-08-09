@@ -1,3 +1,4 @@
+import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
@@ -7,7 +8,6 @@ import Layout from '@/components/layout/Layout';
 import Home from '@/pages/Home';
 import Mission from '@/pages/Mission';
 import Eglises from '@/pages/Eglises';
-import Formation from '@/pages/Formation';
 import Education from '@/pages/Education';
 import CentreFormation from '@/pages/CentreFormation';
 import Medical from '@/pages/Medical';
@@ -19,6 +19,19 @@ import Register from '@/pages/Register';
 import ForgotPassword from '@/pages/ForgotPassword';
 import ResetPassword from '@/pages/ResetPassword';
 import OAuthConsent from '@/pages/OAuthConsent';
+
+// Lazy load de la page Formation : elle embarque Swiper.js (carrousel 3D),
+// une librairie tierce lourde utilisée uniquement sur cette page.
+// Ça évite que son poids pèse sur les autres routes et isole son
+// chargement au moment réel où l'utilisateur visite /formation.
+const Formation = lazy(() => import('@/pages/Formation'));
+
+// Fallback léger affiché pendant le téléchargement du chunk Formation
+const FormationFallback = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="w-8 h-8 border-4 border-slate-200 border-t-slate-800 rounded-full animate-spin"></div>
+  </div>
+);
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth } = useAuth();
@@ -37,7 +50,14 @@ const AuthenticatedApp = () => {
         <Route path="/" element={<Home />} />
         <Route path="/mission" element={<Mission />} />
         <Route path="/eglises" element={<Eglises />} />
-        <Route path="/formation" element={<Formation />} />
+        <Route
+          path="/formation"
+          element={
+            <Suspense fallback={<FormationFallback />}>
+              <Formation />
+            </Suspense>
+          }
+        />
         <Route path="/education" element={<Education />} />
         <Route path="/centre-de-formation" element={<CentreFormation />} />
         <Route path="/medical" element={<Medical />} />

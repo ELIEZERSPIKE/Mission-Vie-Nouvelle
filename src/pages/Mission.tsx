@@ -9,9 +9,9 @@ const TABS = [
     label: "Notre histoire",
     heading: "D'un petit groupe à un écosystème de mission",
     body: [
-      "Tout a commencé à Togoville, sur les rives du lac Togo, lorsqu'un petit groupe de croyants s'est rassemblé autour de l'appel du Christ : « Suivez-moi, et je vous ferai pêcheurs d'hommes. »",
-      "De cette obéissance simple sont nées, au fil des décennies, des églises, des écoles, des ateliers de formation et des centres de soins — chacun répondant à un besoin concret du peuple togolais.",
-      "Aujourd'hui, Vie Nouvelle Togo est une mission interconnectée, présente à Togoville comme à Tokoin, et rayonnant à travers tout le pays.",
+      "Tout a commencé, lorsqu'un petit groupe de croyants s'est rassemblé autour de l'appel du Christ : « Suivez-moi, et je vous ferai pêcheurs d'hommes. »",
+      "De cette obéissance simple sont nées, au fil des décennies, des églises, des écoles, des ateliers de formation et des centres de soins — chacun répondant à un besoin concret.",
+      "Aujourd'hui,  la mission Vie Nouvelle Togo est une mission interconnectée, présente à Togoville (Petit Paradis), et rayonnant à travers tout le pays.",
     ],
   },
   {
@@ -50,7 +50,7 @@ const TABS = [
     label: "Notre gouvernance",
     heading: "Une mission structurée et responsable",
     body: [
-      "Vie Nouvelle Togo est dirigée par un conseil de mission composé de pasteurs, de responsables de départements et de laïcs engagés.",
+      "Vie Nouvelle Togo est dirigée par un conseil de mission composé de pasteurs, de responsables de départements engagés.",
       "Chaque département est dirigé par un responsable qui rend compte au conseil, assurant cohérence, transparence et continuité de la vision à travers le pays.",
     ],
   },
@@ -58,14 +58,15 @@ const TABS = [
 
 export default function Mission() {
   const [tab, setTab] = useState("histoire");
-  const active = TABS.find((t) => t.key === tab);
+  const active = TABS.find((t) => t.key === tab) ?? TABS[0];
 
   return (
     <>
       <PageHeader
         eyebrow="La Mission"
         title="Qui sommes-nous, d'où nous venons, où nous allons."
-        intro="Vie Nouvelle Togo est une mission chrétienne qui agit sur tout l'être humain, du spirituel au concret, depuis Togoville et Tokoin."
+        intro="Vie Nouvelle Togo est une mission chrétienne qui agit sur tout l'être humain, du spirituel au concret. Découvrez notre histoire, notre vision et nos valeurs."
+        image="/images/soutenir-hero.jpg"
       />
 
       <section className="bg-background py-20 sm:py-28 grain">

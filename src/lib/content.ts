@@ -1,43 +1,48 @@
 // Centralized content data for Vie Nouvelle Togo
-export const DEPARTMENTS = [
+export type AccentColor = "ochre" | "indigo" | "veridian";
+
+export interface Department {
+  slug: string;
+  name: string;
+  tagline: string;
+  description: string;
+  accent: AccentColor;
+}
+
+export const DEPARTMENTS: Department[] = [
   {
     slug: "eglises",
     name: "Églises",
     tagline: "Des communautés vivantes à travers le Togo",
     description: "Des paroisses établies de ville en village, animées par des pasteurs dévoués et ancrées dans l'Évangile.",
-    image: "https://media.base44.com/images/public/6a6fb98e9833fce37a50447a/9d188a710_generated_e13352f2.png",
     accent: "ochre",
   },
   {
     slug: "formation",
     name: "Formation",
-    tagline: "FATT & Institut Biblique",
+    tagline: "FATT & Fathet",
     description: "Former des disciples et des serviteurs capables d'enseigner et de conduire avec intégrité.",
-    image: "https://media.base44.com/images/public/6a6fb98e9833fce37a50447a/fb3472bca_generated_8ab3095d.png",
     accent: "indigo",
   },
   {
     slug: "education",
     name: "Éducation",
     tagline: "Primaire & Secondaire",
-    description: "Des écoles qui élèvent une génération instruite, intègre et confiante en son avenir.",
-    image: "https://media.base44.com/images/public/6a6fb98e9833fce37a50447a/40ce6c0e4_generated_385dc82b.png",
+    description: " Accompagner les élèves  pour une génération instruite, intègre et confiante en son avenir.",
     accent: "ochre",
   },
   {
     slug: "centre-de-formation",
     name: "Centre de Formation",
-    tagline: "Menuiserie · Carrelage · Plomberie",
+    tagline: "Menuiserie · Carrelage · Plomberie ...",
     description: "Des métiers transmis aux jeunes, restaurant dignité et autonomie par le travail des mains.",
-    image: "https://media.base44.com/images/public/6a6fb98e9833fce37a50447a/3daf9728d_generated_196d5acf.png",
     accent: "indigo",
   },
   {
     slug: "medical",
     name: "Médical",
-    tagline: "Petit Paradis — Togoville / Tokoin",
+    tagline: "Petit Paradis — Togoville",
     description: "Des soins de proximité et un lieu de guérison, témoignant de l'amour du Christ en actes.",
-    image: "https://media.base44.com/images/public/6a6fb98e9833fce37a50447a/5d982dc53_generated_9b696b2c.png",
     accent: "veridian",
   },
 ];
@@ -55,6 +60,7 @@ export const STATS = [
   { value: "30", suffix: "", label: "Années de mission" },
   { value: "12", suffix: "+", label: "Églises établies" },
   { value: "125", suffix: "+", label: "Élèves scolarisés" },
+  { value: "450", suffix: "+", label: "Pasteurs formés" },
 ];
 
 export const TESTIMONIALS = [

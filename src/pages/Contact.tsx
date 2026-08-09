@@ -40,7 +40,7 @@ export default function Contact() {
               <li className="flex items-start gap-4">
                 <MapPin size={20} className="text-accent mt-1 shrink-0" />
                 <div>
-                  <p className="font-medium text-foreground">Togoville & Tokoin</p>
+                  <p className="font-medium text-foreground">Togoville(Petit Paradis)</p>
                   <p className="text-sm">Région Maritime, Togo</p>
                 </div>
               </li>
@@ -48,14 +48,14 @@ export default function Contact() {
                 <Mail size={20} className="text-accent mt-1 shrink-0" />
                 <div>
                   <p className="font-medium text-foreground">Email</p>
-                  <p className="text-sm">contact@vienouvelletogo.org</p>
+                  <p className="text-sm">infos@missionvienouvelle.net</p>
                 </div>
               </li>
               <li className="flex items-start gap-4">
                 <Phone size={20} className="text-accent mt-1 shrink-0" />
                 <div>
                   <p className="font-medium text-foreground">Téléphone</p>
-                  <p className="text-sm">+228 90 00 00 00</p>
+                  <p className="text-sm">+228 99 48 54 55</p>
                 </div>
               </li>
             </ul>

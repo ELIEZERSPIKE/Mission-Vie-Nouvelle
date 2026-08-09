@@ -40,13 +40,13 @@ export default function DepartmentDetail({
   return (
     <>
       {/* 1. En-tête de la page */}
-     <PageHeader
-  eyebrow={eyebrow}
-  title={title}
-  intro={intro}
-  image={image}
-/>
-     
+      <PageHeader
+        eyebrow={eyebrow}
+        title={title}
+        intro={intro}
+        image={image}
+      />
+
 
       {/* 2. Cartes des sous-piliers (Optionnel) */}
       {subPillars && subPillars.length > 0 && (
@@ -85,21 +85,18 @@ export default function DepartmentDetail({
       {sections?.map((sec, i) => (
         <section
           key={i}
-          className={`py-20 sm:py-28 ${
-            i % 2 === 1 ? "bg-secondary/30 grain" : "bg-background"
-          }`}
+          className={`py-20 sm:py-28 ${i % 2 === 1 ? "bg-secondary/30 grain" : "bg-background"
+            }`}
         >
           <div className="max-w-[1400px] mx-auto px-5 sm:px-8">
             <div
-              className={`grid lg:grid-cols-12 gap-12 items-start ${
-                sec.reverse ? "lg:[direction:rtl]" : ""
-              }`}
+              className={`grid lg:grid-cols-12 gap-12 items-start ${sec.reverse ? "lg:[direction:rtl]" : ""
+                }`}
             >
               {/* Colonne texte */}
               <div
-                className={`lg:col-span-5 ${
-                  sec.reverse ? "lg:[direction:ltr]" : ""
-                }`}
+                className={`lg:col-span-5 ${sec.reverse ? "lg:[direction:ltr]" : ""
+                  }`}
               >
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -141,9 +138,8 @@ export default function DepartmentDetail({
 
               {/* Colonne Image */}
               <div
-                className={`lg:col-span-6 lg:col-start-7 ${
-                  sec.reverse ? "lg:[direction:ltr]" : ""
-                }`}
+                className={`lg:col-span-6 lg:col-start-7 ${sec.reverse ? "lg:[direction:ltr]" : ""
+                  }`}
               >
                 {sec.image && (
                   <motion.div
@@ -167,7 +163,7 @@ export default function DepartmentDetail({
       ))}
 
       {/* 4. Section Call To Action (Soutien) */}
-      <section className="bg-primary text-primary-foreground py-20">
+      <section className="bg-primary text-primary-foreground py-20 mt-16 sm:mt-24">
         <div className="max-w-[1100px] mx-auto px-5 sm:px-8 text-center">
           <h2 className="font-heading text-3xl sm:text-4xl text-balance mb-5">
             Soutenez ce département
@@ -183,6 +179,7 @@ export default function DepartmentDetail({
           </Link>
         </div>
       </section>
+
     </>
   );
 }

@@ -105,14 +105,14 @@ export default function FormationHero({ onSelectBranch }: FormationHeroProps): R
             {/* 5. Boutons CTA */}
             <motion.div variants={itemVariants} className="pt-2 flex flex-wrap gap-4">
               <a
-                href="#branches"
+                href="#fathet"
                 onClick={() => onSelectBranch("fathet")}
                 className="inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-lg font-medium transition-colors shadow-sm text-sm"
               >
-                Fatehet (La Faculté de Théologie de Togoville) <ArrowUpRight size={18} />
+                Fatehet (La Faculté de Théologie de Togoville) 
               </a>
               <a
-                href="#branches"
+                href="#fatt"
                 onClick={() => onSelectBranch("fatt")}
                 className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 px-6 py-3 rounded-lg font-medium transition-colors border border-border text-sm"
               >

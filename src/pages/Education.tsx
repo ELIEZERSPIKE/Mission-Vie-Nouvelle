@@ -12,14 +12,14 @@ export default function Education() {
         { tag: "Primaire", name: "École primaire", desc: "Les fondations de la lecture, du calcul et du caractère." },
         { tag: "Secondaire", name: "Collège & Lycée", desc: "Préparation aux examens et à la vie d'adulte responsable." },
         { tag: "Valeurs", name: "Éducation au caractère", desc: "Intégrité, respect et sens du service au cœur du parcours." },
-        { tag: "Encadrement", name: "Suivi individualisé", desc: "Des enseignants dévoués et un encadrement de proximité." },
+        { tag: "Encadrement", name: "Suivi individualisé", desc: "Des volontaires dévoués et un encadrement de proximité." },
       ]}
       sections={[
         {
           eyebrow: "Primaire",
           heading: "Les premières années, les plus importantes",
           body: [
-            "L'école primaire accueille les enfants dès le CP, dans des classes où l'attention portée à chaque élève favorise des fondations solides.",
+            "L'école primaire accueille les enfants dès le CP,l'attention portée à chaque élève favorise des fondations solides.",
             "Au-delà des savoirs, on y apprend le respect, la discipline et le goût de l'effort — des valeurs qui accompagnent toute une vie.",
           ],
           bullets: ["Alphabétisation et numératie solides", "Petits effectifs par classe", "Activités culturelles et sportives"],
