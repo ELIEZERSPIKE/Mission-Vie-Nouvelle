@@ -8,7 +8,6 @@ import Testimonials from "@/components/home/Testimonials";
 // import MediaGallery from "@/components/home/MediaGallery";
 import SupportCTA from "@/components/home/SupportCTA";
 import Timeline from "@/components/home/Timeline";
-import { MediaGallery } from "@/components/media-gallery";
 import InternationalPresence from "@/components/home/InternationalPresence";
 
 
@@ -21,7 +20,6 @@ export default function Home() {
       <InternationalPresence />
       <ImpactStats />
       <Testimonials />
-    <MediaGallery />
     </>
   );
 }

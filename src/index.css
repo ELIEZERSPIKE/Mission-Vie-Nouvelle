@@ -1,103 +1,237 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 38 32% 96%;
-    --foreground: 222 41% 14%;
-    --card: 38 32% 98%;
-    --card-foreground: 222 41% 14%;
-    --popover: 38 32% 98%;
-    --popover-foreground: 222 41% 14%;
-    --primary: 222 41% 14%;
-    --primary-foreground: 38 32% 96%;
-    --secondary: 28 42% 92%;
-    --secondary-foreground: 222 41% 14%;
-    --muted: 38 24% 93%;
-    --muted-foreground: 222 14% 40%;
-    --accent: 20 51% 54%;
-    --accent-foreground: 38 32% 96%;
-    --veridian: 152 35% 26%;
-    --destructive: 0 72% 45%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 32 22% 88%;
-    --input: 32 22% 88%;
-    --ring: 20 51% 54%;
-    --radius: 0.25rem;
-    --font-heading: 'Fraunces', ui-serif, Georgia, serif;
-    --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
-    --font-display: 'Fraunces', ui-serif, Georgia, serif;
-    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    /* Palette principale - tons neutres et élégants */
+    --background: 0 0% 100%;
+    --foreground: 220 20% 10%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 220 20% 10%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 20% 10%;
+    
+    /* Primaire - bleu-vert profond (cohérent avec l'accent émeraude) */
+    --primary: 175 45% 14%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondaire - gris très clair */
+    --secondary: 220 15% 96%;
+    --secondary-foreground: 175 45% 14%;
+    
+    /* Muted - gris doux */
+    --muted: 220 15% 94%;
+    --muted-foreground: 220 10% 45%;
+    
+    /* Accent - une seule couleur vive pour la personnalité */
+    --accent: 160 60% 35%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* Accent secondaire optionnel */
+    --accent-secondary: 25 80% 55%;
+    --accent-secondary-foreground: 0 0% 100%;
+    
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 220 15% 90%;
+    --input: 220 15% 90%;
+    --ring: 160 60% 35%;
+    
+    --radius: 0.5rem;
+    
+    /* Typographie simplifiée */
+    --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
   }
 
+  /* Mode sombre - épuré */
   .dark {
-    --background: 222 41% 9%;
-    --foreground: 38 32% 92%;
-    --card: 222 41% 12%;
-    --card-foreground: 38 32% 92%;
-    --popover: 222 41% 12%;
-    --popover-foreground: 38 32% 92%;
-    --primary: 38 32% 92%;
-    --primary-foreground: 222 41% 9%;
-    --secondary: 222 30% 18%;
-    --secondary-foreground: 38 32% 92%;
-    --muted: 222 30% 18%;
-    --muted-foreground: 38 16% 65%;
-    --accent: 20 51% 54%;
-    --accent-foreground: 38 32% 96%;
-    --veridian: 152 35% 40%;
-    --border: 222 30% 20%;
-    --input: 222 30% 20%;
-    --ring: 20 51% 54%;
+    --background: 220 20% 6%;
+    --foreground: 220 15% 92%;
+    
+    --card: 220 20% 8%;
+    --card-foreground: 220 15% 92%;
+    
+    --popover: 220 20% 8%;
+    --popover-foreground: 220 15% 92%;
+    
+    --primary: 175 40% 88%;
+    --primary-foreground: 175 45% 10%;
+    
+    --secondary: 220 20% 12%;
+    --secondary-foreground: 220 15% 92%;
+    
+    --muted: 220 20% 12%;
+    --muted-foreground: 220 10% 60%;
+    
+    --accent: 160 60% 40%;
+    --accent-foreground: 0 0% 100%;
+    
+    --border: 220 20% 16%;
+    --input: 220 20% 16%;
+    --ring: 160 60% 40%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground font-body;
-    font-size: 1.0625rem;
-    line-height: 1.65;
+    @apply bg-background text-foreground font-body antialiased;
   }
 
+  /* Typographie plus épurée */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading;
-    letter-spacing: -0.02em;
+    @apply font-heading font-semibold tracking-tight;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  h4 {
+    @apply text-xl md:text-2xl;
+  }
+
+  /* Transitions pour navbar et header */
+  * {
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+  }
+
+  /* Animation d'entrée du header */
+  .page-header-content {
+    animation: fadeInUp 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+  
+  .page-header-content > *:nth-child(1) { animation-delay: 0.1s; }
+  .page-header-content > *:nth-child(2) { animation-delay: 0.2s; }
+  .page-header-content > *:nth-child(3) { animation-delay: 0.3s; }
+  .page-header-content > *:nth-child(4) { animation-delay: 0.4s; }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Pattern pour pages sans image */
+.pottery-pattern {
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+  background-size: 100% 100%, 100% 100%;
+}
+
+  /* Grain texture */
+  .grain {
+    position: relative;
+  }
+  
+  .grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.03;
+     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E"); 
+    background-repeat: repeat;
+    background-size: 256px 256px;
+    pointer-events: none;
   }
 }
 
 @layer utilities {
-  .horizon-line {
-    background: linear-gradient(90deg, transparent, hsl(var(--accent)) 20%, hsl(var(--accent)) 80%, transparent);
-  }
-
+  /* Utilitaires simples et propres */
   .text-balance {
     text-wrap: balance;
   }
 
-  .grain {
-    background-image: radial-gradient(circle at 1px 1px, rgba(20, 27, 45, 0.04) 1px, transparent 0);
-    background-size: 24px 24px;
+  .gradient-accent {
+    @apply bg-gradient-to-r from-accent to-accent-secondary;
   }
 
-  .pottery-pattern {
-    background-image:
-      radial-gradient(circle at 50% 50%, rgba(193, 122, 79, 0.06) 2px, transparent 2px),
-      radial-gradient(circle at 0 0, rgba(193, 122, 79, 0.04) 1px, transparent 1px);
-    background-size: 28px 28px, 14px 14px;
+  .gradient-subtle {
+    @apply bg-gradient-to-br from-background via-background to-muted;
   }
 
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  .glass {
+    @apply bg-white/80 backdrop-blur-md dark:bg-black/50;
   }
+
+  .glass-dark {
+    @apply bg-black/10 backdrop-blur-md dark:bg-white/5;
+  }
+
+  .shadow-soft {
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+  }
+
+  .shadow-soft-dark {
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .ring-accent {
+    @apply ring-2 ring-accent ring-offset-2 ring-offset-background;
+  }
+
+  /* Animation douce */
+  .transition-smooth {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .transition-slow {
+    @apply transition-all duration-500 ease-in-out;
+  }
+
+  /* Scrollbar custom */
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Shadow pour la navbar */
+  .shadow-nav {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  }
+}
+
+@media (max-width: 640px) {
+  .page-header-content h1 {
+    font-size: 2.5rem !important;
+  }
+  
+  .page-header-content p {
+    font-size: 1rem !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .lg-sticky {
+    position: relative !important;
+    top: 0 !important;
   }
 }

@@ -26,9 +26,6 @@ export default function ImpactStats() {
             </motion.div>
           ))}
         </div>
-        <p className="text-center text-xs text-foreground/40 mt-8 uppercase tracking-[0.2em]">
-          Qui servons-nous ? — Le peuple togolais, dans toute sa diversité.
-        </p>
       </div>
     </section>
   );
