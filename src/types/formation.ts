@@ -6,7 +6,7 @@ export interface Teacher {
   role: string;
   bio: string;
   image: string;
-  branch: "fatt" | "fathet";
+  branch: "institut-biblique" | "fathet";
 }
 
 export interface Program {

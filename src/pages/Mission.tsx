@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import PageHeader from "@/components/layout/PageHeader";
 import { Check, ArrowRight } from "lucide-react";
@@ -8,7 +9,6 @@ const TABS = [
     key: "histoire",
     label: "Notre histoire",
     heading: "D'un petit groupe à un écosystème de mission",
-    icon: "📖",
     body: [
       "Tout a commencé, lorsqu'un petit groupe de croyants s'est rassemblé autour de l'appel du Christ : « Suivez-moi, et je vous ferai pêcheurs d'hommes. »",
       "De cette obéissance simple sont nées, au fil des décennies, des églises, des écoles, des ateliers de formation et des centres de soins — chacun répondant à un besoin concret.",
@@ -19,7 +19,6 @@ const TABS = [
     key: "vision",
     label: "Notre vision",
     heading: "Voir le Togo restauré dans toutes ses dimensions",
-    icon: "👁️",
     body: [
       "Nous croyons que l'Évangile du Christ touche l'être humain tout entier : son âme, son esprit, ses mains et son corps.",
       "Notre vision est de voir des communautés togolaises vivantes, instruites, autonomes et soignées — où la foi se traduit en actes concrets de transformation.",
@@ -29,7 +28,6 @@ const TABS = [
     key: "mission",
     label: "Notre mission",
     heading: "Faire de chaque disciple un pêcheur d'hommes",
-    icon: "🎯",
     body: [
       "Notre mission est de répondre à l'appel de Matthieu 4:19 en formant des disciples qui, à leur tour, transforment leurs communautés.",
       "Nous le faisons à travers cinq départements interconnectés : Églises, Formation, Éducation, Centre de Formation et Médical — chacun une expression vivante de l'Évangile en action.",
@@ -39,7 +37,6 @@ const TABS = [
     key: "valeurs",
     label: "Nos valeurs",
     heading: "Ce qui nous anime et nous guide",
-    icon: "💎",
     body: [],
     bullets: [
       "Fidélité à l'Écriture et à l'appel du Christ",
@@ -53,7 +50,6 @@ const TABS = [
     key: "gouvernance",
     label: "Notre gouvernance",
     heading: "Une mission structurée et responsable",
-    icon: "⚖️",
     body: [
       "Vie Nouvelle Togo est dirigée par un conseil de mission composé de pasteurs, de responsables de départements engagés.",
       "Chaque département est dirigé par un responsable qui rend compte au conseil, assurant cohérence, transparence et continuité de la vision à travers le pays.",
@@ -95,7 +91,6 @@ export default function Mission() {
                         : "text-foreground/55 hover:text-foreground hover:bg-accent/5 rounded-lg lg:rounded-none lg:bg-transparent lg:border-transparent"
                     }`}
                   >
-                    <span className="text-lg">{t.icon}</span>
                     <span className="hidden lg:inline">{t.label}</span>
                     <span className="lg:hidden">{t.label}</span>
                     {tab === t.key && (
@@ -122,7 +117,6 @@ export default function Mission() {
                 >
                   {/* Heading with icon */}
                   <div className="flex items-start gap-4 mb-7">
-                    <span className="text-4xl mt-1">{active.icon}</span>
                     <h2 className="font-heading text-3xl sm:text-4xl leading-tight text-balance">
                       {active.heading}
                     </h2>
@@ -174,8 +168,10 @@ export default function Mission() {
                     className="mt-10 pt-8 border-t border-border/50"
                   >
                     <p className="text-sm text-foreground/40 flex items-center gap-2">
-                      <span>Découvrez aussi nos départements</span>
-                      <ArrowRight size={14} className="text-accent" />
+                      <Link to="/#ecosystem" className="inline-flex items-center gap-2 text-accent hover:underline">
+                        Découvrez aussi nos départements
+                        <ArrowRight size={14} className="text-accent" />
+                      </Link>
                     </p>
                   </motion.div>
                 </motion.div>

@@ -4,7 +4,7 @@ import type { Variants } from "framer-motion";
 import { useRef } from "react";
 import { ArrowUpRight, GraduationCap } from "lucide-react";
 interface FormationHeroProps {
-  onSelectBranch: (branch: "fatt" | "fathet") => void;
+  onSelectBranch: (branch: "institut-biblique" | "fathet") => void;
 }
 
 /* ---------- Variants : cascade du bloc de texte ---------- */
@@ -63,7 +63,7 @@ export default function FormationHero({ onSelectBranch }: FormationHeroProps): R
               variants={itemVariants}
               className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-accent bg-accent/10 px-3.5 py-1.5 rounded-full"
             >
-              <span>Centre de Formation Biblique et Pastorale Mission Vie Nouvelle</span>
+              <span>Formation Biblique et Pastorale</span>
             </motion.div>
 
             {/* 2. Titre H1 — mot par mot */}
@@ -112,11 +112,11 @@ export default function FormationHero({ onSelectBranch }: FormationHeroProps): R
                 Fatehet (La Faculté de Théologie de Togoville) 
               </a>
               <a
-                href="#fatt"
-                onClick={() => onSelectBranch("fatt")}
+                href="#institut-biblique"
+                onClick={() => onSelectBranch("institut-biblique")}
                 className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 px-6 py-3 rounded-lg font-medium transition-colors border border-border text-sm"
               >
-                le FATT
+                Institut biblique Neues Leben
               </a>
             </motion.div>
           </motion.div>

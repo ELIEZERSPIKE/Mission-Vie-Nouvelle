@@ -33,13 +33,13 @@ export default function BranchCarousel({
     if (!activeBranch || !swiperRef.current || images.length === 0) return;
 
     const currentImg = images[currentIndex];
-    const isCurrentFatt = currentImg?.id.startsWith('fatt') || currentImg?.branch === 'fatt';
-    const currentBranch = isCurrentFatt ? 'fatt' : 'fathet';
+    const isCurrentFatt = currentImg?.id.startsWith('institut-biblique') || currentImg?.branch === 'institut-biblique';
+    const currentBranch = isCurrentFatt ? 'institut-biblique' : 'fathet';
 
     if (currentBranch !== activeBranch) {
       const targetIndex = images.findIndex((img) => {
-        const isImgFatt = img.id.startsWith('fatt') || img.branch === 'fatt';
-        return activeBranch === 'fatt' ? isImgFatt : !isImgFatt;
+        const isImgFatt = img.id.startsWith('institut-biblique') || img.branch === 'institut-biblique';
+        return activeBranch === 'institut-biblique' ? isImgFatt : !isImgFatt;
       });
 
       if (targetIndex !== -1 && swiperRef.current) {
@@ -73,8 +73,8 @@ export default function BranchCarousel({
     }
 
     if (onSelectBranch) {
-      const isFatt = selectedImg.id.startsWith('fatt') || selectedImg.branch === 'fatt';
-      onSelectBranch(isFatt ? 'fatt' : 'fathet');
+      const isFatt = selectedImg.id.startsWith('institut-biblique') || selectedImg.branch === 'institut-biblique';
+      onSelectBranch(isFatt ? 'institut-biblique' : 'fathet');
     }
   };
 
@@ -137,7 +137,7 @@ export default function BranchCarousel({
         }}
       >
         {images.map((image, index) => {
-          const isFatt = image.id.startsWith('fatt') || image.branch === 'fatt';
+          const isFatt = image.id.startsWith('institut-biblique') || image.branch === 'institut-biblique';
           
           return (
             <SwiperSlide 

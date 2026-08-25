@@ -238,15 +238,6 @@ export default function Hero() {
         <div className="h-20 sm:h-24 shrink-0" />
 
         <div className="flex flex-1 flex-col items-center justify-start pt-6 sm:pt-10 px-6 pb-10 text-center">
-          {/* Badge */}
-          <motion.span
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="inline-flex items-center gap-3 rounded-full border border-white/20 bg-white/5 px-5 py-2 text-[0.7rem] uppercase tracking-[0.35em] text-white/80 backdrop-blur-md sm:text-xs"
-          >
-            Mission Chrétienne · Togo
-          </motion.span>
 
           {/* Titre */}
           <motion.h1

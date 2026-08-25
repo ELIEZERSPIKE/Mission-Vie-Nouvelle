@@ -18,7 +18,7 @@ const dossierDocuments = [
   "Autorisation du conjoint(e)",
 ];
 
-export default function FattAdmission() {
+export default function InstitutAdmission() {
   return (
     <div className="space-y-6 max-w-xl">
       {/* Objectifs */}
@@ -29,7 +29,6 @@ export default function FattAdmission() {
         <ul className="space-y-3">
           {objectifs.map((item, i) => (
             <li key={i} className="flex items-start gap-3 text-sm text-foreground/70 leading-relaxed">
-              <span className="text-foreground/20 text-xs mt-0.5">—</span>
               <span>{item}</span>
             </li>
           ))}
@@ -61,7 +60,6 @@ export default function FattAdmission() {
             className="inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors duration-300 group"
           >
             Remplir le formulaire d'inscription en ligne
-            <span className="text-foreground/30 group-hover:text-foreground/50 transition-colors duration-300">→</span>
           </button>
         </div>
       </div>

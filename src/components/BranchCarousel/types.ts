@@ -3,7 +3,7 @@ export interface BranchImage {
   src: string;
   alt: string;
   label?: string;
-  branch?: 'fatt' | 'fathet';
+  branch?: 'institut-biblique' | 'fathet';
 }
 
 export interface BranchCarouselProps {
@@ -11,7 +11,7 @@ export interface BranchCarouselProps {
   className?: string;
   autoPlaySpeed?: number; // secondes entre chaque diapo (0 pour désactiver)
   radius?: number; // profondeur/rayon de l'arc (défaut: 260)
-  activeBranch?: 'fatt' | 'fathet';
+  activeBranch?: 'institut-biblique' | 'fathet';
   onSelectImage?: (image: BranchImage) => void;
-  onSelectBranch?: (branch: 'fatt' | 'fathet') => void;
+  onSelectBranch?: (branch: 'institut-biblique' | 'fathet') => void;
 }

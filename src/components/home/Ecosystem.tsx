@@ -44,7 +44,7 @@ export default function Ecosystem() {
   };
 
   return (
-    <section className="relative bg-background py-24 sm:py-36 grain overflow-hidden">
+    <section id="ecosystem" className="relative bg-background py-24 sm:py-36 grain overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-5 sm:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <motion.p

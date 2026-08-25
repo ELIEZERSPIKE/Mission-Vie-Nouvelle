@@ -12,12 +12,12 @@ import {
   ExternalLink,
 } from "lucide-react";
 import BranchCarousel from "@/components/BranchCarousel";
-import FattAdmission from "@/components/formation/FattAdmission";
+import InstitutAdmission from "@/components/formation/InstitutAdmission";
 import FathetPrograms from "@/components/formation/FathetPrograms";
 import { trainingLocations, TrainingLocation } from "@/data/trainingLocations";
 import { branchImages } from "@/data/branchImages";
 
-export type BranchType = "fatt" | "fathet";
+export type BranchType = "institut-biblique" | "fathet";
 
 interface BranchSelectorProps {
   activeBranch: BranchType;
@@ -213,33 +213,33 @@ export default function BranchSelector({ activeBranch, onSelectBranch }: BranchS
               transition={{ duration: 0.6 }}
             >
               <div
-                onClick={() => onSelectBranch("fatt")}
+                onClick={() => onSelectBranch("institut-biblique")}
                 className="cursor-pointer mb-6 space-y-2"
               >
                 <span className="inline-flex items-center gap-2 bg-accent/10 text-accent px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-[0.2em]">
                   <Target className="w-3.5 h-3.5" />
-                  FATT
+                  Institut biblique Neues Leben
                 </span>
-                <h3 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight pt-1">
-                  Formation d'Action &amp; Terrain Théologique
-                </h3>
+                <h4 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight pt-1">
+                  Etablissement d'Enseignement Théologique Interconfessionnel
+                </h4>
               </div>
 
               <p className="text-foreground/70 leading-relaxed text-base mb-6 max-w-xl">
                 Former des serviteurs de Dieu à être des héros de grand calibre, capables d'arracher des âmes qui jusqu'ici sont tenues captives dans les ténèbres.
               </p>
 
-              <FattAdmission />
+              <InstitutAdmission />
 
               <div className="pt-2 border-t border-border/20 max-w-xl">
-                <a
+                {/* <a
                   href="#enseignants"
-                  onClick={() => onSelectBranch("fatt")}
+                  onClick={() => onSelectBranch("institut-biblique")}
                   className="inline-flex items-center gap-2 font-medium text-accent hover:gap-3 transition-all duration-300 text-sm group"
                 >
-                  Voir l'équipe &amp; les modules FATT
+                  Voir l'équipe &amp; les modules Institut biblique
                   <ChevronDown className="w-4 h-4 transition-transform group-hover:translate-x-1 -rotate-90" />
-                </a>
+                </a> */}
               </div>
             </motion.div>
 
@@ -253,14 +253,14 @@ export default function BranchSelector({ activeBranch, onSelectBranch }: BranchS
             >
               {/* Image */}
               <div
-                onClick={() => onSelectBranch("fatt")}
+                onClick={() => onSelectBranch("institut-biblique")}
                 className={`relative aspect-[4/5] rounded-2xl overflow-hidden border shadow-2xl cursor-pointer group transition-all duration-500 ${
-                  activeBranch === "fatt" ? "border-accent/60 shadow-accent/20" : "border-border hover:border-accent/40"
+                  activeBranch === "institut-biblique" ? "border-accent/60 shadow-accent/20" : "border-border hover:border-accent/40"
                 }`}
               >
                 <img
-                  src="/images/fatt/learning2.jpg"
-                  alt="Formation FATT - Formation d'Action & Terrain Théologique"
+                  src="/images/institut-biblique/learning2.jpg"
+                  alt="Formation Institut biblique - Formation d'Action & Terrain Théologique"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
@@ -275,10 +275,8 @@ export default function BranchSelector({ activeBranch, onSelectBranch }: BranchS
                 </div>
               </div>
 
-              {/* Localisation FATT */}
-              {fattLocation && (
-                <LocationInfo location={fattLocation} accentColor="accent" />
-              )}
+              {/* Localisation Institut biblique */}
+             
             </motion.div>
           </div>
 
@@ -365,8 +363,8 @@ export default function BranchSelector({ activeBranch, onSelectBranch }: BranchS
             className="max-w-6xl mx-auto"
             onSelectBranch={onSelectBranch}
             onSelectImage={(img) => {
-              if (img.id.startsWith('fatt') || img.branch === 'fatt') {
-                onSelectBranch('fatt');
+              if (img.id.startsWith('fatt') || img.branch?.toLowerCase().includes('institut')) {
+                onSelectBranch('institut-biblique');
               } else if (img.id.startsWith('fathet') || img.branch === 'fathet') {
                 onSelectBranch('fathet');
               }
