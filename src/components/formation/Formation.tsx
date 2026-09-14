@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Sparkles, ArrowUpRight } from "lucide-react";
 
 interface FormationHeroProps {
-  onSelectBranch: (branch: "fatt" | "fathet") => void;
+  onSelectBranch: (branch: "institut-biblique" | "fathet") => void;
 }
 
 export default function FormationHero({ onSelectBranch }: FormationHeroProps) {
@@ -42,7 +42,7 @@ export default function FormationHero({ onSelectBranch }: FormationHeroProps) {
             <div className="pt-2 flex flex-wrap gap-4">
               <a 
                 href="#branches" 
-                onClick={() => onSelectBranch("fatt")}
+                onClick={() => onSelectBranch("institut-biblique")}
                 className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 px-6 py-3 rounded-lg font-medium transition-colors border border-border text-sm"
               >
                 Découvrir le FATT

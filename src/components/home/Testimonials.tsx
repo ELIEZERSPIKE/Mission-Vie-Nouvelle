@@ -7,7 +7,7 @@ export default function Testimonials() {
   const [idx, setIdx] = useState(0);
   const t = TESTIMONIALS[idx];
 
-  const go = (dir) => setIdx((p) => (p + dir + TESTIMONIALS.length) % TESTIMONIALS.length);
+  const go = (dir: number) => setIdx((p) => (p + dir + TESTIMONIALS.length) % TESTIMONIALS.length);
 
   return (
     <section id="temoignages" className="relative bg-primary text-primary-foreground py-24 sm:py-36 overflow-hidden pottery-pattern">

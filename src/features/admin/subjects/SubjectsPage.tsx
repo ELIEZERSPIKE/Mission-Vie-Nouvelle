@@ -1,0 +1,276 @@
+import { useState, type FormEvent } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { subjectsApi } from '../../../api/endpoints/subjects';
+import { contentItemsApi, type ContentItemType } from '../../../api/endpoints/contentItems';
+import { programsApi } from '../../../api/endpoints/programs';
+import { Button } from '../../../components/ui/button';
+import { Input } from '../../../components/ui/input';
+import { Label } from '../../../components/ui/label';
+
+const TYPE_LABELS: Record<ContentItemType, string> = {
+  PDF: 'Document PDF', VIDEO: 'Vidéo', AUDIO: 'Audio', DOCUMENT: 'Autre document', ASSESSMENT: 'Évaluation',
+};
+const TYPE_ACCEPT: Record<ContentItemType, string> = {
+  PDF: 'application/pdf', VIDEO: 'video/*', AUDIO: 'audio/*', DOCUMENT: '*/*', ASSESSMENT: '*/*',
+};
+
+const selectClass =
+  'h-11 w-full border border-input bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50';
+
+function SubjectRow({ subject }: { subject: { id: string; title: string; status: string } }) {
+  const queryClient = useQueryClient();
+  const [expanded, setExpanded] = useState(false);
+  const [itemType, setItemType] = useState<ContentItemType>('PDF');
+  const [file, setFile] = useState<File | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+
+  const { data: items } = useQuery({
+    queryKey: ['content-items', subject.id],
+    queryFn: () => contentItemsApi.listBySubject(subject.id),
+    enabled: expanded,
+  });
+
+  const uploadMutation = useMutation({
+    mutationFn: () => {
+      if (!file) throw new Error('Aucun fichier sélectionné.');
+      return contentItemsApi.createWithFile(subject.id, subject.title, file, itemType);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['content-items', subject.id] });
+      setFile(null);
+      setUploadError(null);
+    },
+    onError: (err: any) => setUploadError(err.response?.data?.message ?? "Erreur lors de l'upload."),
+  });
+
+  return (
+    <>
+      <tr className="border-b border-border/40 last:border-0">
+        <td className="w-10 px-4 py-3">
+          <button
+            type="button"
+            onClick={() => setExpanded(!expanded)}
+            className="text-muted-foreground hover:text-foreground"
+            aria-label={expanded ? 'Replier' : 'Déplier'}
+          >
+            {expanded ? '▾' : '▸'}
+          </button>
+        </td>
+        <td className="px-4 py-3 font-medium text-foreground">{subject.title}</td>
+        <td className="px-4 py-3 text-muted-foreground">{subject.status === 'ACTIVE' ? 'Active' : subject.status}</td>
+      </tr>
+
+      {expanded && (
+        <tr className="border-b border-border/40 last:border-0 bg-muted/30">
+          <td></td>
+          <td colSpan={2} className="px-4 py-4">
+            {items && items.length > 0 && (
+              <ul className="mb-4 space-y-1.5 text-sm text-foreground">
+                {items.map((item) => (
+                  <li key={item.id} className="flex items-center gap-2">
+                    <span>{item.title}</span>
+                    <span className="text-muted-foreground">
+                      ({TYPE_LABELS[item.type]}) — {item.files[0] ? `${(item.files[0].size_bytes / 1024 / 1024).toFixed(1)} Mo` : 'aucun fichier'}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <form
+              onSubmit={(e: FormEvent) => {
+                e.preventDefault();
+                uploadMutation.mutate();
+              }}
+              className="flex flex-wrap items-end gap-3"
+            >
+              {uploadError && (
+                <div role="alert" className="w-full border border-destructive/50 bg-destructive/10 px-4 py-2 text-sm text-destructive">
+                  {uploadError}
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor={`type-${subject.id}`}>Type</Label>
+                <select
+                  id={`type-${subject.id}`}
+                  className={`${selectClass} min-w-[180px]`}
+                  value={itemType}
+                  onChange={(e) => setItemType(e.target.value as ContentItemType)}
+                >
+                  {Object.entries(TYPE_LABELS).map(([value, label]) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor={`file-${subject.id}`}>Fichier</Label>
+                <input
+                  id={`file-${subject.id}`}
+                  type="file"
+                  accept={TYPE_ACCEPT[itemType]}
+                  onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                  required
+                  className="h-11 text-sm text-foreground file:mr-3 file:h-11 file:border-0 file:bg-muted file:px-3 file:text-sm file:font-medium file:text-foreground"
+                />
+              </div>
+
+              <Button type="submit" size="sm" disabled={uploadMutation.isPending} className="h-11">
+                {uploadMutation.isPending ? 'Envoi...' : 'Ajouter le fichier'}
+              </Button>
+            </form>
+          </td>
+        </tr>
+      )}
+    </>
+  );
+}
+
+export function SubjectsPage() {
+  const queryClient = useQueryClient();
+  const [programId, setProgramId] = useState('');
+  const [yearOrderIndex, setYearOrderIndex] = useState(1);
+  const [trimesterOrderIndex, setTrimesterOrderIndex] = useState(1);
+  const [newSubjectTitle, setNewSubjectTitle] = useState('');
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const { data: programs } = useQuery({ queryKey: ['programs', 'admin'], queryFn: programsApi.listAdmin });
+
+  const { data: subjects, isLoading } = useQuery({
+    queryKey: ['subjects', 'admin', programId, yearOrderIndex, trimesterOrderIndex],
+    queryFn: () => subjectsApi.listAdmin(programId, yearOrderIndex, trimesterOrderIndex),
+    enabled: !!programId,
+  });
+
+  const createMutation = useMutation({
+    mutationFn: () =>
+      subjectsApi.create({
+        program_id: programId,
+        year_order_index: yearOrderIndex,
+        trimester_order_index: trimesterOrderIndex,
+        title: newSubjectTitle,
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['subjects', 'admin', programId, yearOrderIndex, trimesterOrderIndex] });
+      setNewSubjectTitle('');
+      setFormError(null);
+    },
+    onError: (err: any) => setFormError(err.response?.data?.message ?? 'Erreur lors de la création.'),
+  });
+
+  return (
+    <div className="px-5 py-10 sm:px-8 sm:py-16">
+      <div className="mx-auto max-w-4xl">
+        <header className="border-t border-border/40 pt-8 md:pt-12">
+          <p className="mb-3 text-sm font-medium tracking-wide text-primary">Programme de cours</p>
+          <h1 className="font-serif text-3xl leading-tight text-foreground sm:text-4xl">Matières par cursus</h1>
+          <p className="mt-3 max-w-xl text-base leading-7 text-muted-foreground">
+            Défini une seule fois par cursus — se réplique automatiquement sur chaque nouvelle session créée.
+          </p>
+        </header>
+
+        <div className="mt-8 space-y-2 sm:max-w-xs">
+          <Label htmlFor="program">Cursus</Label>
+          <select id="program" className={selectClass} value={programId} onChange={(e) => setProgramId(e.target.value)}>
+            <option value="">— Choisir —</option>
+            {programs?.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {programId && (
+          <>
+            <div className="mt-5 grid gap-5 sm:grid-cols-2 sm:max-w-md">
+              <div className="space-y-2">
+                <Label htmlFor="year">Année</Label>
+                <select
+                  id="year"
+                  className={selectClass}
+                  value={yearOrderIndex}
+                  onChange={(e) => setYearOrderIndex(Number(e.target.value))}
+                >
+                  <option value={1}>Année 1</option>
+                  <option value={2}>Année 2</option>
+                  <option value={3}>Année 3</option>
+                </select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="trimester">Trimestre</Label>
+                <select
+                  id="trimester"
+                  className={selectClass}
+                  value={trimesterOrderIndex}
+                  onChange={(e) => setTrimesterOrderIndex(Number(e.target.value))}
+                >
+                  <option value={1}>Trimestre 1</option>
+                  <option value={2}>Trimestre 2</option>
+                  <option value={3}>Trimestre 3</option>
+                </select>
+              </div>
+            </div>
+
+            <form
+              onSubmit={(e: FormEvent) => {
+                e.preventDefault();
+                createMutation.mutate();
+              }}
+              className="mt-6 flex flex-wrap items-end gap-3"
+            >
+              {formError && (
+                <div role="alert" className="w-full border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                  {formError}
+                </div>
+              )}
+              <div className="flex-1 space-y-2 sm:max-w-sm">
+                <Label htmlFor="new-subject">Nouvelle matière</Label>
+                <Input
+                  id="new-subject"
+                  placeholder="Ex : Connaissance de Dieu"
+                  value={newSubjectTitle}
+                  onChange={(e) => setNewSubjectTitle(e.target.value)}
+                  required
+                  className="h-11"
+                />
+              </div>
+              <Button type="submit" disabled={createMutation.isPending} className="h-11">
+                {createMutation.isPending ? 'Création...' : 'Ajouter cette matière'}
+              </Button>
+            </form>
+
+            <div className="mt-8">
+              {isLoading ? (
+                <p className="text-sm text-muted-foreground">Chargement...</p>
+              ) : !subjects || subjects.length === 0 ? (
+                <p className="text-sm text-muted-foreground">Aucune matière pour cette sélection.</p>
+              ) : (
+                <div className="overflow-x-auto border border-border/60">
+                  <table className="w-full border-collapse text-left text-sm">
+                    <thead>
+                      <tr className="border-b border-border/60 text-muted-foreground">
+                        <th className="w-10 px-4 py-3"></th>
+                        <th className="px-4 py-3 font-medium">Matière</th>
+                        <th className="px-4 py-3 font-medium">Statut</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {subjects.map((subject) => (
+                        <SubjectRow key={subject.id} subject={subject} />
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}

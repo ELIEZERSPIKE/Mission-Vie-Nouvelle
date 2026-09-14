@@ -42,13 +42,6 @@ export default function ProgramGrid({ programs }: ProgramGridProps) {
                   </ul>
                 </div>
               </div>
-
-              <div className="mt-8 pt-4 border-t border-border flex items-center justify-between">
-                <span className="text-xs text-foreground/60">{prog.duration}</span>
-                <a href="#contact" className="text-xs font-semibold text-accent flex items-center gap-1 hover:underline">
-                  En savoir plus <ArrowUpRight size={14} />
-                </a>
-              </div>
             </div>
           ))}
         </div>

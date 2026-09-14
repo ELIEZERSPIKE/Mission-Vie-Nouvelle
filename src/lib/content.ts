@@ -52,6 +52,21 @@ const FOUNDING_YEAR = 1996;
 
 const currentMissionYear = new Date().getFullYear() - FOUNDING_YEAR + 1;
 
+export interface TimelineItem {
+  year: string;
+  title: string;
+  text: string;
+}
+
+export const TIMELINE: TimelineItem[] = [
+  { year: "1995", title: "Les premiers pas", text: "L'œuvre débute avec un petit groupe de jeunes étudiants en théologie (2 togolais et 2 burkinabès), animés par l'appel de Matthieu 4:19." },
+  { year: "1997", title: "Première église établie", text: "Une paroisse permanente est bâtie, marquant l'ancrage de la mission dans la communauté locale." },
+  { year: "2001", title: "Naissance de la Formation", text: "Le FATT puis l'Institut Biblique ouvrent pour former des serviteurs et des disciples." },
+  { year: "2008", title: "L'éducation prend racine", text: "Des écoles primaire et secondaire voient le jour pour élever la jeunesse togolaise." },
+  { year: "2015", title: "Centre de Formation professionnelle", text: "Les ateliers de menuiserie, carrelage et plomberie transmettent des métiers aux jeunes." },
+  { year: "Aujourd'hui", title: "Un écosystème vivant", text: "Cinq départements interconnectés servent le peuple togolais sur tout son territoire." },
+];
+
 export const STATS = [
   { value: String(currentMissionYear), suffix: "", label: "Années de mission" },
   { value: "12", suffix: "+", label: "Églises établies" },

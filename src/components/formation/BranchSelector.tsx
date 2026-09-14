@@ -202,7 +202,7 @@ export default function BranchSelector({ activeBranch, onSelectBranch }: BranchS
         <div className="space-y-20 mb-14">
 
           {/* ---------- CURSUS 1 : FATT ---------- */}
-          <div id="fatt" className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          <div id="institut-biblique" className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
             
             {/* Texte - Gauche */}
             <motion.div
@@ -363,9 +363,9 @@ export default function BranchSelector({ activeBranch, onSelectBranch }: BranchS
             className="max-w-6xl mx-auto"
             onSelectBranch={onSelectBranch}
             onSelectImage={(img) => {
-              if (img.id.startsWith('fatt') || img.branch?.toLowerCase().includes('institut')) {
+              if (img.branch === 'institut-biblique') {
                 onSelectBranch('institut-biblique');
-              } else if (img.id.startsWith('fathet') || img.branch === 'fathet') {
+              } else if (img.branch === 'fathet') {
                 onSelectBranch('fathet');
               }
             }}

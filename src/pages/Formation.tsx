@@ -17,7 +17,7 @@ import FormationCTA from "@/components/formation/FormationCTA";
 
 export default function Formation(): React.JSX.Element {
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
-  const [activeBranch, setActiveBranch] = useState<"fatt" | "fathet">("fathet");
+  const [activeBranch, setActiveBranch] = useState<"institut-biblique" | "fathet">("fathet");
 
   return (
     <main className="bg-background text-foreground antialiased selection:bg-accent selection:text-accent-foreground">

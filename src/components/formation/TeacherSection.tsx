@@ -3,8 +3,8 @@ import type { Teacher } from "@/types/formation";
 
 interface TeacherSectionProps {
   teachers: Teacher[];
-  activeBranch: "fatt" | "fathet";
-  onBranchChange: (branch: "fatt" | "fathet") => void;
+  activeBranch: "institut-biblique" | "fathet";
+  onBranchChange: (branch: "institut-biblique" | "fathet") => void;
   onSelectTeacher: (teacher: Teacher) => void;
 }
 
@@ -39,14 +39,14 @@ export default function TeacherSection({
 
             </button>
             <button
-              onClick={() => onBranchChange("fatt")}
+              onClick={() => onBranchChange("institut-biblique")}
               className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                activeBranch === "fatt"
+                activeBranch === "institut-biblique"
                   ? "bg-primary text-primary-foreground shadow"
                   : "text-foreground/70 hover:text-foreground"
               }`}
             >
-              Équipe FATT
+              Équipe Institut Biblique
             </button>
           </div>
         </div>

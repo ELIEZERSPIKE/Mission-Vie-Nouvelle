@@ -1,76 +1,18 @@
 import * as React from "react"
 import { useSize } from "@/hooks/use-size"
 import { cn } from "@/lib/utils"
+import {
+  buildSrcSet,
+  buildTransformUrl,
+  DEFAULT_TRANSFORM_WIDTH,
+  getOriginalImageUrl,
+  IMAGE_LOAD_MODE,
+  nextImageLoadMode,
+  parseWixMediaUrl,
+} from "./image-helpers"
 
 const FALLBACK_IMAGE_URL =
   "https://static.wixstatic.com/media/12d367_4f26ccd17f8f4e3a8958306ea08c2332~mv2.png"
-
-// Wix Media Platform hosts whose images support /v1/ transform URLs
-// (resize, focal-point crop, and format conversion via the OUTPUT FILENAME
-// EXTENSION — a .webp output re-encodes JPG/PNG uploads to WebP on the fly).
-const WIX_MEDIA_HOSTS = ["media.base44.com", "static.wixstatic.com"]
-// First-paint width before the container is measured.
-const DEFAULT_TRANSFORM_WIDTH = 1024
-const DEVICE_PIXEL_RATIOS = [1, 2, 3]
-// Not a documented CDN limit — verified live that w_/h_ up to 10000 succeed
-// and requests start failing somewhere between 10000 and 15000. This is a
-// defensive ceiling with generous headroom (a 3x DPR request needs a
-// ~2000px container to reach it), not a real constraint we expect to hit.
-const MAX_DIMENSION = 6000
-
-/**
- * Detects a Wix Media URL and strips any existing /v1/ transform so it can be
- * rebuilt. Returns null for other hosts and for SVGs (vectors — a raster
- * transform only downgrades them).
- */
-function parseWixMediaUrl(src) {
-  try {
-    const url = new URL(src)
-    if (!WIX_MEDIA_HOSTS.includes(url.hostname)) return null
-    const v1 = url.pathname.indexOf("/v1/")
-    const basePath = v1 === -1 ? url.pathname : url.pathname.slice(0, v1)
-    const filename = basePath.split("/").pop()
-    if (!filename || /\.svg$/i.test(filename)) return null
-    return { baseUrl: `${url.origin}${basePath}`, filename }
-  } catch {
-    return null
-  }
-}
-
-const clampDim = (n) => Math.min(Math.max(Math.round(n), 1), MAX_DIMENSION)
-const clamp01 = (n) => Math.min(1, Math.max(0, n))
-
-/**
- * Builds a Wix Media transform URL:
- * `<base>/v1/{fill|fit}/w_,h_[,fp_x_y|al_c],q_,usm_…/<name>.webp`
- * GIFs keep their extension (WebP output could drop animation).
- */
-function buildTransformUrl({ baseUrl, filename }, { width, height, crop, focalPoint, quality }) {
-  const params = [`w_${clampDim(width)}`, `h_${clampDim(height || width)}`]
-  if (crop) {
-    params.push(
-      focalPoint
-        ? `fp_${clamp01(focalPoint.x).toFixed(2)}_${clamp01(focalPoint.y).toFixed(2)}`
-        : "al_c"
-    )
-  }
-  params.push(`q_${quality}`, "usm_0.66_1.00_0.01", "enc_webp", "quality_auto")
-  const outputName = /\.gif$/i.test(filename)
-    ? filename
-    : filename.replace(/\.[a-z0-9]+$/i, "") + ".webp"
-  return `${baseUrl}/v1/${crop ? "fill" : "fit"}/${params.join(",")}/${outputName}`
-}
-
-function buildSrcSet(parsed, options) {
-  return DEVICE_PIXEL_RATIOS.map(
-    (dpr) =>
-      `${buildTransformUrl(parsed, {
-        ...options,
-        width: options.width * dpr,
-        height: options.height ? options.height * dpr : undefined,
-      })} ${dpr}x`
-  ).join(", ")
-}
 
 const ImageWrapper = React.forwardRef(({ aspectRatio, className, style, children }, ref) => (
   <span
@@ -166,11 +108,12 @@ const ResponsiveImage = React.forwardRef(
 ResponsiveImage.displayName = "ResponsiveImage"
 
 /**
- * Image with built-in Wix Media Platform support: URLs on media.base44.com /
- * static.wixstatic.com are served resized to the rendered container (per
- * device pixel ratio) and re-encoded to WebP; `fittingType="fill"` crops
- * server-side, optionally anchored at a focal point. Other URLs render as a
- * plain <img>. Failed loads swap to a fallback image.
+ * Image with built-in Wix Media Platform support: canonical public images on
+ * media.base44.com and static.wixstatic.com/media are resized to the rendered
+ * container per device pixel ratio and re-encoded to WebP; `fittingType="fill"`
+ * crops server-side, optionally anchored at a focal point. Other URLs render
+ * as a plain <img>. Failed transforms retry the original URL; only a broken
+ * original swaps to the generic fallback image.
  */
 const Image = React.forwardRef(
   (
@@ -182,19 +125,30 @@ const Image = React.forwardRef(
       focalPointX,
       focalPointY,
       quality = 90,
+      onError,
       ...props
     },
     ref
   ) => {
-    const [imgSrc, setImgSrc] = React.useState(src)
+    const parsedSource = src && src !== FALLBACK_IMAGE_URL ? parseWixMediaUrl(src) : null
+    const initialMode = parsedSource ? IMAGE_LOAD_MODE.OPTIMIZED : IMAGE_LOAD_MODE.ORIGINAL
+    const [loadState, setLoadState] = React.useState({ src, mode: initialMode })
+    const mode = loadState.src === src ? loadState.mode : initialMode
 
     React.useEffect(() => {
-      setImgSrc(src)
-    }, [src])
+      setLoadState({ src, mode: initialMode })
+    }, [src, initialMode])
+
+    const handleError = (event) => {
+      if (mode === IMAGE_LOAD_MODE.FALLBACK) return
+      const nextMode = nextImageLoadMode(mode)
+      setLoadState({ src, mode: nextMode })
+      if (nextMode === IMAGE_LOAD_MODE.FALLBACK) onError?.(event)
+    }
 
     const imageProps = {
       ...props,
-      onError: () => setImgSrc(FALLBACK_IMAGE_URL),
+      onError: handleError,
     }
 
     if (!src) {
@@ -205,14 +159,15 @@ const Image = React.forwardRef(
       return <img ref={ref} src={FALLBACK_IMAGE_URL} {...imageProps} data-empty-image />
     }
 
-    // The fallback renders as a plain <img> so a broken upload can't cascade
-    // into a second (transformed) failing request.
-    const parsed = imgSrc === FALLBACK_IMAGE_URL ? null : parseWixMediaUrl(imgSrc)
+    // A failed transform retries the underlying original as a plain image.
+    // Only a failure of that original advances to the generic fallback.
+    const parsed = mode === IMAGE_LOAD_MODE.OPTIMIZED ? parsedSource : null
 
     if (!parsed) {
-      const isErrorUrl = imgSrc === FALLBACK_IMAGE_URL
+      const isErrorMode = mode === IMAGE_LOAD_MODE.FALLBACK
+      const imageSrc = isErrorMode ? FALLBACK_IMAGE_URL : getOriginalImageUrl(src, parsedSource)
       return (
-        <img ref={ref} src={imgSrc} {...imageProps} data-error-image={isErrorUrl || undefined} />
+        <img ref={ref} src={imageSrc} {...imageProps} data-error-image={isErrorMode || undefined} />
       )
     }
 

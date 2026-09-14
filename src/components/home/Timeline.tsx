@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { AnimatedGroup } from "@/components/core/animated-group";
-import { TIMELINE } from "@/lib/content";
+import { TIMELINE, type TimelineItem } from "@/lib/content";
 
 export default function Timeline() {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
@@ -56,7 +56,7 @@ export default function Timeline() {
               },
             }}
           >
-            {TIMELINE.map((item) => (
+            {TIMELINE.map((item: TimelineItem) => (
               <div
                 key={item.year}
                 className="group flex items-start gap-4 p-4 sm:p-5 rounded-xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] hover:-translate-y-0.5 transition-all duration-300"

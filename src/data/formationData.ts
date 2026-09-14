@@ -35,14 +35,14 @@ export const TEACHERS: Teacher[] = [
     branch: "fathet",
   },
 
-  // ---- FATT ----
+  // ---- INSTITUT BIBLIQUE ----
   {
     id: "fatt-1",
     name: "Nom Enseignant 4",
     role: "Titre / Matière enseignée",
     bio: "Courte biographie de l'enseignant...",
     image: "/images/Teachers/fatt-1.jpg",
-    branch: "fatt",
+    branch: "institut-biblique",
   },
   {
     id: "fatt-2",
@@ -50,7 +50,7 @@ export const TEACHERS: Teacher[] = [
     role: "Titre / Matière enseignée",
     bio: "Courte biographie de l'enseignant...",
     image: "/images/Teachers/fatt-2.jpg",
-    branch: "fatt",
+    branch: "institut-biblique",
   },
   {
     id: "fatt-3",
@@ -58,7 +58,7 @@ export const TEACHERS: Teacher[] = [
     role: "Titre / Matière enseignée",
     bio: "Courte biographie de l'enseignant...",
     image: "/images/Teachers/fatt-3.jpg",
-    branch: "fatt",
+    branch: "institut-biblique",
   },
 ];
 
