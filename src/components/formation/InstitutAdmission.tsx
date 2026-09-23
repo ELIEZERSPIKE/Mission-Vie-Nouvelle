@@ -1,5 +1,6 @@
 // FattAdmission.tsx - Version épurée et naturelle
 import React from "react";
+import { Link } from "react-router-dom";
 
 const objectifs = [
   "Former des serviteurs de Dieu à être des héros de grands calibres, capables d'arracher des âmes captives dans les ténèbres",
@@ -55,12 +56,12 @@ export default function InstitutAdmission() {
         </ul>
 
         <div className="pt-3 border-t border-border/40">
-          <button
-            onClick={() => document.getElementById("inscription")?.scrollIntoView({ behavior: "smooth" })}
+          <Link
+            to="/inscription/institut-biblique"
             className="inline-flex items-center gap-2 text-sm font-medium text-foreground/70 hover:text-foreground transition-colors duration-300 group"
           >
             Remplir le formulaire d'inscription en ligne
-          </button>
+          </Link>
         </div>
       </div>
     </div>

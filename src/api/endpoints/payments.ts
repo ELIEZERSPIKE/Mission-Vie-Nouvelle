@@ -36,4 +36,9 @@ export const paymentsApi = {
     const { data } = await axiosClient.post(`/admin/payments/${paymentId}/validate`);
     return data;
   },
+
+  reject: async (paymentId: string, reason?: string) => {
+    const { data } = await axiosClient.post(`/admin/payments/${paymentId}/reject`, { reason });
+    return data;
+  },
 };

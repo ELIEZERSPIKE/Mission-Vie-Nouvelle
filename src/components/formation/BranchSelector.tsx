@@ -43,8 +43,7 @@ const LocationInfo = ({
 
   // Emails généraux de l'institut
   const generalEmails = [
-    'missionvienouvelle@missionvienouvelle.net',
-    'infos@missionvienouvelle.net'
+    'info@missionvienouvelle.org'
   ];
 
   // Numéros de téléphone corrigés
@@ -201,7 +200,7 @@ export default function BranchSelector({ activeBranch, onSelectBranch }: BranchS
         {/* ===== CURSUS ===== */}
         <div className="space-y-20 mb-14">
 
-          {/* ---------- CURSUS 1 : FATT ---------- */}
+          {/* ---------- CURSUS 1 : institut-biblique ---------- */}
           <div id="institut-biblique" className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
             
             {/* Texte - Gauche */}
@@ -354,7 +353,7 @@ export default function BranchSelector({ activeBranch, onSelectBranch }: BranchS
         </div>
 
         {/* ===== CARROUSEL ===== */}
-        <div className="mb-14">
+        {/* <div className="mb-14">
           <BranchCarousel
             images={branchImages}
             radius={280}
@@ -370,7 +369,8 @@ export default function BranchSelector({ activeBranch, onSelectBranch }: BranchS
               }
             }}
           />
-        </div>
+        </div> */}
+
       </div>
 
       <style>{`

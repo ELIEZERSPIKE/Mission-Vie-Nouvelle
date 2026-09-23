@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Check, Clock, LoaderCircle, Phone } from 'lucide-react';
+import { Check, LoaderCircle, Phone, X } from 'lucide-react';
 import { paymentsApi, type PendingPayment } from '../../../api/endpoints/payments';
 import { Button } from '../../../components/ui/button';
 
@@ -14,6 +15,7 @@ function formatDate(iso: string) {
 }
 
 const PROVIDER_LABELS: Record<string, string> = {
+  FEDAPAY: 'FedaPay (en ligne)',
   CINETPAY: 'CinetPay (en ligne)',
   CASH: 'Espèces',
   BANK_TRANSFER: 'Virement bancaire',
@@ -41,7 +43,7 @@ function StatusSeal({ status }: { status: PendingPayment['status'] }) {
           <span className="h-2 w-2 rounded-full bg-accent" />
         </span>
         <div>
-          <p className="text-foreground">Confirmé par CinetPay</p>
+          <p className="text-foreground">Confirmé en ligne</p>
           <p className="mt-0.5 text-xs text-muted-foreground">Prêt à valider</p>
         </div>
       </div>
@@ -77,13 +79,14 @@ function StatusSeal({ status }: { status: PendingPayment['status'] }) {
   );
 }
 
-function validateErrorMessage(error: unknown): string {
+function errorMessage(error: unknown): string {
   const message = (error as { response?: { data?: { message?: string } } } | null)?.response?.data?.message;
-  return message ?? 'La validation a échoué. Réessayez.';
+  return message ?? 'L\'opération a échoué. Réessayez.';
 }
 
 export function PaymentsValidationPage() {
   const queryClient = useQueryClient();
+  const [rejectingId, setRejectingId] = useState<string | null>(null);
 
   const { data: payments, isLoading, isError } = useQuery({
     queryKey: ['payments', 'pending'],
@@ -98,7 +101,20 @@ export function PaymentsValidationPage() {
     },
   });
 
+  const rejectMutation = useMutation({
+    mutationFn: ({ id, reason }: { id: string; reason?: string }) => paymentsApi.reject(id, reason),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['payments', 'pending'] });
+      setRejectingId(null);
+    },
+  });
+
   const pendingCount = payments?.length ?? 0;
+  const mutationError = validateMutation.isError
+    ? validateMutation.error
+    : rejectMutation.isError
+      ? rejectMutation.error
+      : null;
 
   return (
     <div className="space-y-10">
@@ -110,16 +126,16 @@ export function PaymentsValidationPage() {
         <p className="mt-3 max-w-xl text-base leading-7 text-muted-foreground">
           {pendingCount > 0
             ? `${pendingCount} paiement${pendingCount > 1 ? 's' : ''} en attente. La validation confirme le règlement et inscrit l'étudiant.`
-            : 'Les paiements confirmés par CinetPay ou enregistrés au guichet apparaissent ici.'}
+            : 'Les paiements confirmés en ligne ou enregistrés au guichet apparaissent ici.'}
         </p>
       </header>
 
-      {validateMutation.isError && (
+      {mutationError && (
         <div
           role="alert"
           className="border border-destructive/50 bg-destructive/10 px-4 py-3 text-sm text-destructive"
         >
-          {validateErrorMessage(validateMutation.error)}
+          {errorMessage(mutationError)}
         </div>
       )}
 
@@ -138,7 +154,7 @@ export function PaymentsValidationPage() {
         </div>
       ) : (
         <div className="overflow-x-auto border border-border/60">
-          <table className="w-full min-w-[800px] border-collapse text-left text-sm">
+          <table className="w-full min-w-[900px] border-collapse text-left text-sm">
             <thead>
               <tr className="border-b border-border/60 text-muted-foreground">
                 <th className="px-4 py-3 font-medium">Étudiant</th>
@@ -196,22 +212,59 @@ export function PaymentsValidationPage() {
                         <Check className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
                         Validé
                       </span>
-                    ) : (
-                      <Button
-                        size="sm"
-                        onClick={() => validateMutation.mutate(p.id)}
-                        disabled={validateMutation.isPending}
-                        className="h-8"
-                      >
-                        {validateMutation.isPending && validateMutation.variables === p.id ? (
-                          <>
+                    ) : rejectingId === p.id ? (
+                      <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => rejectMutation.mutate({ id: p.id })}
+                          disabled={rejectMutation.isPending}
+                          className="h-8"
+                        >
+                          {rejectMutation.isPending && rejectMutation.variables?.id === p.id ? (
                             <LoaderCircle className="animate-spin" aria-hidden="true" />
-                            Validation...
-                          </>
-                        ) : (
-                          'Valider'
-                        )}
-                      </Button>
+                          ) : (
+                            'Confirmer'
+                          )}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => setRejectingId(null)}
+                          disabled={rejectMutation.isPending}
+                          className="h-8"
+                        >
+                          Annuler
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          onClick={() => validateMutation.mutate(p.id)}
+                          disabled={validateMutation.isPending}
+                          className="h-8"
+                        >
+                          {validateMutation.isPending && validateMutation.variables === p.id ? (
+                            <>
+                              <LoaderCircle className="animate-spin" aria-hidden="true" />
+                              Validation...
+                            </>
+                          ) : (
+                            'Valider'
+                          )}
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => setRejectingId(p.id)}
+                          disabled={validateMutation.isPending}
+                          className="h-8 w-8 p-0"
+                          aria-label="Rejeter ce paiement"
+                        >
+                          <X className="h-3.5 w-3.5" aria-hidden="true" />
+                        </Button>
+                      </div>
                     )}
                   </td>
                 </tr>

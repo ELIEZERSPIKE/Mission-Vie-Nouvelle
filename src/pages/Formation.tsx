@@ -26,21 +26,25 @@ export default function Formation(): React.JSX.Element {
       <RegimesSection />
       <StatsSection stats={STATS} />
       <ProgramGrid programs={PROGRAMS} />
-      <TeacherSection
+   
+      <ConfessionAccordion points={CONFESSION_POINTS} />
+      <EnvironmentSection />
+      <FormationCTA />
+
+
+
+      {/* <SeminarsSection seminars={SEMINARS} /> */}
+      {/* <TrainingJourney /> */}
+      {/* <TeacherBioModal
+        teacher={selectedTeacher}
+        onClose={() => setSelectedTeacher(null)}
+      /> */}
+         {/* <TeacherSection
         teachers={TEACHERS}
         activeBranch={activeBranch}
         onBranchChange={setActiveBranch}
         onSelectTeacher={setSelectedTeacher}
-      />
-      <ConfessionAccordion points={CONFESSION_POINTS} />
-      <EnvironmentSection />
-      <SeminarsSection seminars={SEMINARS} />
-      <TrainingJourney />
-      <FormationCTA />
-      <TeacherBioModal
-        teacher={selectedTeacher}
-        onClose={() => setSelectedTeacher(null)}
-      />
+      /> */}
     </main>
   );
 }

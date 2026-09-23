@@ -167,12 +167,6 @@ export default function Mission() {
                     transition={{ delay: 0.5 }}
                     className="mt-10 pt-8 border-t border-border/50"
                   >
-                    <p className="text-sm text-foreground/40 flex items-center gap-2">
-                      <Link to="/#ecosystem" className="inline-flex items-center gap-2 text-accent hover:underline">
-                        Découvrez aussi nos départements
-                        <ArrowRight size={14} className="text-accent" />
-                      </Link>
-                    </p>
                   </motion.div>
                 </motion.div>
               </AnimatePresence>
@@ -182,4 +176,4 @@ export default function Mission() {
       </section>
     </>
   );
-}
+} 

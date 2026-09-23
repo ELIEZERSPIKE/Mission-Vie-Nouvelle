@@ -48,7 +48,7 @@ export default function Contact() {
                 <Mail size={20} className="text-accent mt-1 shrink-0" />
                 <div>
                   <p className="font-medium text-foreground">Email</p>
-                  <p className="text-sm">infos@missionvienouvelle.net</p>
+                  <p className="text-sm">info@missionvienouvelle.org</p>
                 </div>
               </li>
               <li className="flex items-start gap-4">

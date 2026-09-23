@@ -131,7 +131,7 @@ const ProgramCard = ({ program, index }: { program: Program; index: number }) =>
   const accent = programAccentClasses[program.accent];
 
   return (
-    <Link to={`/contact?programme=${encodeURIComponent(program.title)}`}>
+    <Link to={`/inscription/fathet?programme=${encodeURIComponent(program.title)}`}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ 
@@ -207,7 +207,7 @@ export default function FathetPrograms() {
           </h4>
 
           <p className="text-sm text-foreground/60 leading-relaxed mb-4">
-            Téléchargez le dossier d'inscription, remplissez-le, et joignez les pièces suivantes :
+            Remplissez le dossier d'inscription, et joignez les pièces suivantes :
           </p>
 
           <ul className="space-y-2 mb-4">

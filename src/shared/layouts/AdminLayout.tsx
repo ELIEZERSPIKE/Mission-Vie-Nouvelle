@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { to: '/admin/grant-manual', label: 'Enregistrement Étudiant', permission: 'enrollment.grant_manual' },
   { to: '/admin/students', label: 'Étudiants', permission: 'student.manage' },
   { to: '/admin/payments', label: 'Paiements à valider', permission: 'student.manage' },
+  { to: '/admin/inquiries', label: 'Demandes d\'inscription', permission: 'student.manage' },
   { to: '/admin/group-resources', label: 'Ressources du groupe', permission: 'student.manage' },
 ] as const;
 

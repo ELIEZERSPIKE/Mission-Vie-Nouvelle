@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from './useAuth';
+import { Loader } from '@/components/ui/loader';
 
 interface ProtectedRouteProps {
   requiredPermission?: string | string[];
@@ -10,7 +11,7 @@ export function ProtectedRoute({ requiredPermission, requiredRole }: ProtectedRo
   const { user, isLoading, hasPermission } = useAuth();
 
   if (isLoading) {
-    return <div>Chargement...</div>;
+    return <Loader />;
   }
 
   if (!user) {

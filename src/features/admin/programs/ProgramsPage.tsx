@@ -13,6 +13,11 @@ interface Program {
   status: string;
 }
 
+
+function formatProgramCode(code: string): string {
+  return code.replace(/_/g, ' ');
+}
+
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
     ACTIVE: 'bg-primary/10 text-primary',
@@ -179,7 +184,7 @@ export function ProgramsPage() {
 
                     return (
                       <tr key={program.id} className="border-b border-border/40 last:border-0">
-                        <td className="px-4 py-3 font-medium text-foreground">{program.code}</td>
+                        <td className="px-4 py-3 font-medium text-foreground">{formatProgramCode(program.code)}</td>
                         <td className="px-4 py-3 text-foreground">{program.name}</td>
                         <td className="px-4 py-3">
                           <StatusBadge status={program.status} />

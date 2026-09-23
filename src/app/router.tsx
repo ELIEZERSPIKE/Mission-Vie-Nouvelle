@@ -10,6 +10,9 @@ import Medical from '@/pages/Medical';
 import Actualites from '@/pages/Actualites';
 import Contact from '@/pages/Contact';
 import Soutenir from '@/pages/Soutenir';
+import MaintenancePage from '@/pages/Maintenancepage';
+import InscriptionInstitutBibliquePage from '@/pages/InscriptionInstitutBibliquePage';
+import InscriptionFathetPage from '@/pages/InscriptionFathetPage';
 import { LoginPage } from '../features/auth/LoginPage';
 import { RegisterPage } from '../features/auth/RegisterPage';
 import { ForgotPasswordPage } from '../features/auth/ForgotPasswordPage';
@@ -36,6 +39,10 @@ import { ProfilePage } from '../features/student/profile/ProfilePage';
 import { GroupResourcesPage } from '../shared/group-resources/GroupResourcesPage';
 import { GroupResourcesPickerPage } from '../features/admin/group-resources/GroupResourcesPickerPage';
 import { NotFoundPage } from '../shared/pages/NotFoundPage';
+import { NotesTestPage } from '../shared/features/notepad/NotesTestPage';
+import { InquiriesListPage } from '../features/admin/inquiery/InquiriesListPage';
+import { InquiryDetailPage } from '../features/admin/inquiery/InquiryDetailPage';
+import { StudentYearPage } from '../features/student/pages/StudentYearPage';
 
 // Lazy load de la page Formation : elle embarque Swiper.js (carrousel 3D),
 // une librairie tierce lourde utilisée uniquement sur cette page.
@@ -76,6 +83,9 @@ const router = createBrowserRouter([
       { path: '/actualites', element: <Actualites /> },
       { path: '/contact', element: <Contact /> },
       { path: '/soutenir', element: <Soutenir /> },
+      { path: '/maintenance', element: <MaintenancePage /> },
+      { path: '/inscription/institut-biblique', element: <InscriptionInstitutBibliquePage /> },
+      { path: '/inscription/fathet', element: <InscriptionFathetPage /> },
     ],
   },
 
@@ -92,6 +102,8 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       { path: '/change-password', element: <ChangePasswordPage /> },
+      { path: '/notes-test', element: <NotesTestPage /> }, // ← temporaire, à retirer une fois le widget flottant prêt
+
     ],
   },
 
@@ -111,6 +123,8 @@ const router = createBrowserRouter([
           { path: '/student/enroll/:yearId', element: <EnrollInfoPage /> },
           { path: '/student/profile', element: <ProfilePage /> },
           { path: '/student/group-resources/:yearId', element: <GroupResourcesPage /> },
+          { path: '/student/years/:yearId', element: <StudentYearPage /> },
+          
         ],
       },
     ],
@@ -154,6 +168,8 @@ const router = createBrowserRouter([
               { path: '/admin/payments', element: <PaymentsValidationPage /> },
               { path: '/admin/group-resources', element: <GroupResourcesPickerPage /> },
               { path: '/admin/group-resources/:yearId', element: <GroupResourcesPage /> },
+              { path: '/admin/inquiries', element: <InquiriesListPage /> },
+              { path: '/admin/inquiries/:id', element: <InquiryDetailPage /> },
             ],
           },
         ],

@@ -202,10 +202,10 @@ export default function Navbar() {
             Soutenir
           </Link>
 
-          {/* ─── Auth Desktop : Se connecter OU Profil ──────────────── */}
+          {/* ─── Auth Desktop : Se connecter a la plateforme de cours en ligne ──────────────── */}
           {!isLoading && !user && (
             <Link
-              to="/login"
+              to="/maintenance"
               className="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium transition-all duration-300 rounded-md border border-primary/30 text-primary hover:bg-primary/5"
             >
               <LogIn size={15} />
@@ -319,7 +319,7 @@ export default function Navbar() {
             {/* ─── Auth Mobile ──────────────────────────────────────── */}
             {!isLoading && !user && (
               <Link
-                to="/login"
+                to="/maintenance"
                 className="mt-3 inline-flex items-center justify-center gap-2 px-5 py-3 border border-primary text-primary font-medium rounded-md hover:bg-primary/5 transition-colors"
                 onClick={() => setOpen(false)}
               >

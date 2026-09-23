@@ -1,7 +1,9 @@
+// src/shared/features/student/pages/SubjectContentPage.tsx
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { tokenService } from '@/auth/tokenService';
 import { ProtectedPdfViewer } from '@/shared/components/ProtectedPdfViewer';
 import { Badge } from '@/components/ui/badge';
+import { NotesPanel } from '@/shared/features/notepad/NotesPanel';
 import { ChevronRight, FileText, FileSearch, Video, Headphones, ClipboardList, BookOpen, CalendarDays, Library, Lock } from 'lucide-react';
 import type { ComponentType } from 'react';
 
@@ -47,24 +49,28 @@ export default function SubjectContentPage() {
 
   return (
     <div>
-      {/* Fil d'Ariane */}
-      <nav className="flex flex-wrap items-center gap-1.5 text-sm" aria-label="Fil d'Ariane">
-        {breadcrumb.map((crumb, i) => {
-          const isLast = i === breadcrumb.length - 1;
-          return (
-            <span key={`${crumb.label}-${i}`} className="flex items-center gap-1.5">
-              {i > 0 && <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" aria-hidden="true" />}
-              {crumb.to && !isLast ? (
-                <Link to={crumb.to} className="text-muted-foreground transition-colors hover:text-foreground">
-                  {crumb.label}
-                </Link>
-              ) : (
-                <span className={isLast ? 'font-medium text-foreground' : 'text-muted-foreground'}>{crumb.label}</span>
-              )}
-            </span>
-          );
-        })}
-      </nav>
+      {/* Fil d'Ariane + bouton Mes notes */}
+      <div className="flex items-center justify-between gap-3">
+        <nav className="flex flex-wrap items-center gap-1.5 text-sm" aria-label="Fil d'Ariane">
+          {breadcrumb.map((crumb, i) => {
+            const isLast = i === breadcrumb.length - 1;
+            return (
+              <span key={`${crumb.label}-${i}`} className="flex items-center gap-1.5">
+                {i > 0 && <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/50" aria-hidden="true" />}
+                {crumb.to && !isLast ? (
+                  <Link to={crumb.to} className="text-muted-foreground transition-colors hover:text-foreground">
+                    {crumb.label}
+                  </Link>
+                ) : (
+                  <span className={isLast ? 'font-medium text-foreground' : 'text-muted-foreground'}>{crumb.label}</span>
+                )}
+              </span>
+            );
+          })}
+        </nav>
+
+        <NotesPanel />
+      </div>
 
       {/* Carte d'identité du support */}
       <div className="mt-6 rounded-md border border-border/60 bg-card p-5 text-card-foreground sm:p-6">
