@@ -38,3 +38,50 @@
     @apply bg-background text-foreground font-body;
   }
 }
+@layer components {
+  .text-or-clair {
+    color: hsl(36 55% 58%);
+  }
+  .bg-or-clair {
+    background-color: hsl(36 55% 58%);
+  }
+  .footer-gradient {
+    background: linear-gradient(
+      180deg,
+      hsl(77 41% 25%) 0%,
+      hsl(77 35% 20%) 35%,
+      hsl(214 32% 17%) 100%
+    );
+  }
+}
+
+@layer components {
+  .text-or-clair {
+    color: hsl(36 55% 58%);
+  }
+  .bg-or-clair {
+    background-color: hsl(36 55% 58%);
+  }
+  .footer-white {
+    background: hsl(0 0% 100%);
+    /* ou légèrement cassé pour éviter le blanc pur : */
+    /* background: hsl(60 20% 99%); */
+  }
+}
+
+@layer base {
+  /* Compensation navbar fixe pour toutes les ancres */
+  [id] {
+    scroll-margin-top: 6rem; /* ajuste selon la hauteur de ta navbar */
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}

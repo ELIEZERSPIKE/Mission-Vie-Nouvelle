@@ -69,7 +69,7 @@ export default function Ecosystem() {
         {/* Woven overlapping diagram */}
         <div className="relative grid md:grid-cols-5 gap-0 max-w-5xl mx-auto">
           {/* Connecting lines between departments */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }}>
+          {/* <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }}>
             {DEPARTMENTS.map((_, i) => {
               if (i < DEPARTMENTS.length - 1) {
                 const x1 = (i / (DEPARTMENTS.length - 1)) * 100;
@@ -94,7 +94,7 @@ export default function Ecosystem() {
               }
               return null;
             })}
-          </svg>
+          </svg> */}
 
           {DEPARTMENTS.map((dept, i) => {
             const accentClass = getAccentClass(dept.accent, "text");

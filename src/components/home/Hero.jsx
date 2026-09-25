@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Compass, Mail } from "lucide-react";
+import { ArrowRight, ArrowDown } from "lucide-react";
 
 // ───────────────────────────────────────────────
 // Données
@@ -11,17 +11,15 @@ const banner = {
   alt: "Bannière Mission Vie Nouvelle",
 };
 
-// Verset
-const heroTitle = "« Suivez-moi, et je ferai de vous des pêcheurs d'hommes »";
+const verse = "« Suivez-moi, et je ferai de vous des pêcheurs d'hommes. »";
+const verseRef = "Matthieu 4:19";
 
 // ───────────────────────────────────────────────
-// Variants d'animation
+// Variants
 // ───────────────────────────────────────────────
 const contentVariants = {
   hidden: {},
-  visible: {
-    transition: { staggerChildren: 0.18, delayChildren: 0.4 },
-  },
+  visible: { transition: { staggerChildren: 0.16, delayChildren: 0.4 } },
 };
 
 const titleVariants = {
@@ -59,10 +57,8 @@ const buttonsVariants = {
 export default function Hero() {
   const [loaded, setLoaded] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-
   const ref = useRef(null);
 
-  // ── Parallax au scroll ───────────────────────
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -71,21 +67,20 @@ export default function Hero() {
   const textY = useTransform(
     scrollYProgress,
     [0, 1],
-    prefersReducedMotion ? [0, 0] : [0, -100]
+    prefersReducedMotion ? [0, 0] : [0, -80]
   );
   const textScale = useTransform(
     scrollYProgress,
     [0, 1],
-    prefersReducedMotion ? [1, 1] : [1, 0.85]
+    prefersReducedMotion ? [1, 1] : [1, 0.9]
   );
   const imageScale = useTransform(
     scrollYProgress,
     [0, 1],
-    prefersReducedMotion ? [1, 1] : [1, 1.15]
+    prefersReducedMotion ? [1, 1] : [1, 1.12]
   );
   const overlayOpacity = useTransform(scrollYProgress, [0, 1], [0.6, 0.9]);
 
-  // ── Détection prefers-reduced-motion ─────────
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReducedMotion(mq.matches);
@@ -97,11 +92,9 @@ export default function Hero() {
   return (
     <section
       ref={ref}
-      className="relative h-[100svh] min-h-[680px] w-full overflow-hidden bg-primary select-none"
+      className="relative min-h-[100svh] w-full overflow-hidden bg-primary select-none"
     >
-      {/* ════════════════════════════════════════
-          1. IMAGE DE FOND (banner statique)
-         ════════════════════════════════════════ */}
+      {/* ═══ 1. Image de fond ═══ */}
       <motion.div style={{ scale: imageScale }} className="absolute inset-0">
         <motion.img
           src={banner.src}
@@ -111,14 +104,11 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: loaded ? 1 : 0 }}
           transition={{ duration: 1.2, ease: "easeInOut" }}
-          className="absolute inset-0 h-full w-full object-cover object-[center_25%]"
+          className="absolute inset-0 h-full w-full object-cover object-[center_30%]"
         />
       </motion.div>
 
-      {/* ════════════════════════════════════════
-          2. OVERLAYS VISUELS
-         ════════════════════════════════════════ */}
-      {/* Grain cinématographique */}
+      {/* ═══ 2. Grain cinématographique ═══ */}
       <div
         className="absolute inset-0 opacity-[0.035] pointer-events-none z-[5]"
         style={{
@@ -127,18 +117,16 @@ export default function Hero() {
         }}
       />
 
-      {/* Filtre dégradé */}
+      {/* ═══ 3. Overlay dégradé ═══ */}
       <motion.div
         style={{ opacity: overlayOpacity }}
-        className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80 z-[2]"
+        className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/45 to-black/85 z-[2]"
       />
 
-      {/* ════════════════════════════════════════
-          3. CONTENU CENTRAL
-         ════════════════════════════════════════ */}
+      {/* ═══ 4. Contenu ═══ */}
       <motion.div
         style={{ y: textY, scale: textScale }}
-        className="relative z-10 flex h-full flex-col"
+        className="relative z-10 flex min-h-[100svh] flex-col"
       >
         {/* Spacer navbar */}
         <div className="h-20 sm:h-24 shrink-0" />
@@ -147,46 +135,64 @@ export default function Hero() {
           variants={contentVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-1 flex-col items-center justify-center pt-20 sm:pt-28 px-6 pb-10 text-center"
+          className="flex flex-1 flex-col items-center justify-center px-5 sm:px-8 pt-8 sm:pt-16 pb-24 sm:pb-28 text-center"
         >
+          {/* ── Eyebrow doré ── */}
+       
 
-          {/* Titre — fondu simple */}
+          {/* ── Verset principal ── */}
           <motion.h1
             variants={titleVariants}
-            className="mt-6 max-w-4xl font-heading text-4xl font-light leading-tight text-white sm:text-6xl lg:text-7xl"
+            className="mt-6 sm:mt-8 max-w-4xl font-heading text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-light leading-[1.15] text-white text-balance"
           >
-            {heroTitle}
+            {verse}
           </motion.h1>
 
-          {/* Sous-titre */}
+          {/* ── Attribution ── */}
           <motion.p
             variants={fadeUpVariants}
-            className="mt-4 text-lg sm:text-xl text-white/70 font-light max-w-xl"
+            className="mt-4 sm:mt-5 font-heading italic text-sm sm:text-base text-or-clair/90"
           >
-            {banner.caption}
+            — {verseRef}
           </motion.p>
 
-          {/* CTA Buttons */}
-          {/* <motion.div
+          {/* ── Double CTA ── */}
+          <motion.div
             variants={buttonsVariants}
-            className="mt-10 flex w-full max-w-md flex-col gap-4 sm:max-w-none sm:flex-row sm:justify-center"
+            className="mt-10 sm:mt-12 flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto px-4 sm:px-0"
           >
             <Link
-              to="/#ecosystem"
-              className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-8 py-4 font-sans text-sm font-semibold text-primary shadow-lg transition-all duration-300 hover:scale-[1.03] hover:opacity-90"
+              to="/eglises"
+              className="group inline-flex items-center justify-center gap-2 w-full sm:w-auto bg-accent text-accent-foreground px-6 sm:px-7 py-3.5 text-sm font-medium rounded-full hover:bg-or-clair hover:text-foreground transition-all hover:shadow-lg hover:shadow-or-clair/25"
             >
-              <Compass size={18} />
-              Nous découvrir
+              Découvrir nos églises
+              <ArrowRight
+                size={16}
+                className="group-hover:translate-x-1 transition-transform"
+              />
             </Link>
 
             <Link
-              to="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 bg-white/10 px-8 py-4 font-sans text-sm font-semibold text-white backdrop-blur-md transition-all duration-300 hover:bg-white/20 hover:border-white/50"
+              to="/soutenir"
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto border border-white/40 text-white px-6 sm:px-7 py-3.5 text-sm font-medium rounded-full hover:bg-white hover:text-foreground transition-colors backdrop-blur-sm"
             >
-              <Mail size={18} />
-              Nous contacter
+              Nous soutenir
             </Link>
-          </motion.div> */}
+          </motion.div>
+        </motion.div>
+
+        {/* ── Scroll indicator ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.6, duration: 1 }}
+          className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/50"
+        >
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+          >
+          </motion.div>
         </motion.div>
       </motion.div>
     </section>

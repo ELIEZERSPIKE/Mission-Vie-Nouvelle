@@ -43,6 +43,8 @@ import { NotesTestPage } from '../shared/features/notepad/NotesTestPage';
 import { InquiriesListPage } from '../features/admin/inquiery/InquiriesListPage';
 import { InquiryDetailPage } from '../features/admin/inquiery/InquiryDetailPage';
 import { StudentYearPage } from '../features/student/pages/StudentYearPage';
+import RootLayout from '@/components/layout/RootLayout'; // ← AJOUTer pour le scroll top des pages 
+
 
 // Lazy load de la page Formation : elle embarque Swiper.js (carrousel 3D),
 // une librairie tierce lourde utilisée uniquement sur cette page.
@@ -60,34 +62,36 @@ const FormationFallback = () => (
 function UnauthorizedPage() {
   return <div>Action non autorisée.</div>;
 }
-
 const router = createBrowserRouter([
-  // ── Pages publiques — accessibles sans authentification ───────────
   {
-    element: <PublicLayout />,
+    element: <RootLayout />,        // ← ENVELOPPE TOUT
     children: [
-      { path: '/', element: <Home /> },
-      { path: '/mission', element: <Mission /> },
-      { path: '/eglises', element: <Eglises /> },
+      // ── Pages publiques ──
       {
-        path: '/formation',
-        element: (
-          <Suspense fallback={<FormationFallback />}>
-            <Formation />
-          </Suspense>
-        ),
+        element: <PublicLayout />,
+        children: [
+          { path: '/', element: <Home /> },
+          { path: '/mission', element: <Mission /> },
+          { path: '/eglises', element: <Eglises /> },
+          {
+            path: '/formation',
+            element: (
+              <Suspense fallback={<FormationFallback />}>
+                <Formation />
+              </Suspense>
+            ),
+          },
+          { path: '/education', element: <Education /> },
+          { path: '/centre-de-formation', element: <CentreFormation /> },
+          { path: '/medical', element: <Medical /> },
+          { path: '/actualites', element: <Actualites /> },
+          { path: '/contact', element: <Contact /> },
+          { path: '/soutenir', element: <Soutenir /> },
+          { path: '/maintenance', element: <MaintenancePage /> },
+          { path: '/inscription/institut-biblique', element: <InscriptionInstitutBibliquePage /> },
+          { path: '/inscription/fathet', element: <InscriptionFathetPage /> },
+        ],
       },
-      { path: '/education', element: <Education /> },
-      { path: '/centre-de-formation', element: <CentreFormation /> },
-      { path: '/medical', element: <Medical /> },
-      { path: '/actualites', element: <Actualites /> },
-      { path: '/contact', element: <Contact /> },
-      { path: '/soutenir', element: <Soutenir /> },
-      { path: '/maintenance', element: <MaintenancePage /> },
-      { path: '/inscription/institut-biblique', element: <InscriptionInstitutBibliquePage /> },
-      { path: '/inscription/fathet', element: <InscriptionFathetPage /> },
-    ],
-  },
 
   // ── Pages d'authentification (layout propre, sans Navbar publique) ─
   { path: '/login', element: <LoginPage /> },
@@ -178,6 +182,8 @@ const router = createBrowserRouter([
   },
 
   { path: '*', element: <NotFoundPage /> },
+    ],
+  },
 ]);
 
 export function AppRouter() {
